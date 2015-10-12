@@ -1,0 +1,5 @@
+web:
+  build: .
+  command: python hello.py
+  ports:
+    - 80:5000
