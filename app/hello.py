@@ -1,6 +1,6 @@
 import server
 
-app = server.get_app()
+app = server.app
 app.debug = True
 
 if __name__ == '__main__':

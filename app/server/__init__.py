@@ -11,7 +11,3 @@ def hello_world():
 @app.route('/login')
 def login():
     pass
-
-
-def get_app():
-    return app
