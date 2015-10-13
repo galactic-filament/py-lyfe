@@ -3,3 +3,8 @@ web:
   command: python hello.py
   ports:
     - 80:5000
+  volumes:
+    - ./app:/srv/app
+test:
+  build: .
+  command: py.test
