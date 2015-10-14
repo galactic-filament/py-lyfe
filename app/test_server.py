@@ -20,3 +20,8 @@ def test_404(client):
 def test_five_oh_oh(client):
     response = client.get('/five-oh-oh')
     assert response.status_code == 500
+
+
+def test_login(client):
+    response = client.get('/login')
+    assert response.status_code == 500
