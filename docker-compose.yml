@@ -8,3 +8,5 @@ web:
 test:
   image: ihsw/py-lyfe
   command: py.test
+  volumes:
+    - ./app:/srv/app

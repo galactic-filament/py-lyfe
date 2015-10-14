@@ -11,3 +11,8 @@ def hello_world():
 @app.route('/login')
 def login():
     pass
+
+
+@app.route('/five-oh-oh')
+def five_oh_oh():
+    raise 'ayy lmao'
