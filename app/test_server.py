@@ -1,9 +1,11 @@
 import pytest
 import server
+import json
 
 
 @pytest.fixture
 def client():
+    server.app.debug = True
     return server.app.test_client()
 
 
@@ -17,11 +19,16 @@ def test_404(client):
     assert response.status_code == 404
 
 
-def test_five_oh_oh(client):
-    response = client.get('/five-oh-oh')
-    assert response.status_code == 500
+def test_receive_json(client):
+    payload = {
+        'title': 'Hello world!'
+    }
+    response = client.post(
+        '/receive-json',
+        data=json.dumps(payload),
+        content_type='application/json'
+    )
 
-
-def test_login(client):
-    response = client.get('/login')
-    assert response.status_code == 500
+    d = json.loads(response.get_data(as_text=True))
+    assert response.status_code == 200
+    assert d['title'] == payload['title']

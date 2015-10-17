@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -8,11 +8,6 @@ def hello_world():
     return 'Hello World!'
 
 
-@app.route('/login')
-def login():
-    pass
-
-
-@app.route('/five-oh-oh')
-def five_oh_oh():
-    raise 'ayy lmao'
+@app.route('/receive-json', methods=['POST'])
+def receive_json():
+    return jsonify(request.get_json())
