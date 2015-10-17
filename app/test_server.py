@@ -11,7 +11,7 @@ def client():
 
 def test_hello_world(client):
     response = client.get('/')
-    assert b'Hello World!' == response.data
+    assert 'Hello World!' == response.get_data(as_text=True)
 
 
 def test_404(client):
