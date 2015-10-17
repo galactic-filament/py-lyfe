@@ -1,6 +1,6 @@
 import pytest
-import server
 import json
+from app import server
 
 
 @pytest.fixture
