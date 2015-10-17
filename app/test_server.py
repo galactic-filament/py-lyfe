@@ -20,15 +20,13 @@ def test_404(client):
 
 
 def test_receive_json(client):
-    payload = {
-        'title': 'Hello world!'
-    }
+    payload = {'title': 'Hello world!'}
     response = client.post(
         '/receive-json',
         data=json.dumps(payload),
         content_type='application/json'
     )
 
-    d = json.loads(response.get_data(as_text=True))
     assert response.status_code == 200
+    d = json.loads(response.get_data(as_text=True))
     assert d['title'] == payload['title']
