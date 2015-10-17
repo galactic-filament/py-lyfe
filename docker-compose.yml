@@ -1,6 +1,6 @@
 web:
   image: ihsw/py-lyfe
-  command: python hello.py
+  command: python server.py
   ports:
     - 80:5000
   volumes:
