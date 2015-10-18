@@ -10,16 +10,6 @@ def client():
     return server.app.test_client()
 
 
-def test_hello_world(client):
-    response = client.get('/')
-    assert 'Hello World!' == response.get_data(as_text=True)
-
-
-def test_404(client):
-    response = client.get('/non-exist')
-    assert response.status_code == 404
-
-
 def test_receive_json(client):
     payload = {'title': 'Hello world!'}
     response = client.post(
