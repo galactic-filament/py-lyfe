@@ -1,12 +1,11 @@
-web:
+base:
   image: ihsw/py-lyfe
-  command: python server.py
+web:
+  extends:
+    service: base
   ports:
     - 80:5000
-  volumes:
-    - ./app:/srv/app
 test:
-  image: ihsw/py-lyfe
+  extends:
+    service: base
   command: py.test
-  volumes:
-    - ./app:/srv/app
