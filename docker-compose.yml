@@ -4,7 +4,7 @@ web:
   extends:
     service: base
   ports:
-    - 80:5000
+    - 80:80
 test:
   extends:
     service: base
