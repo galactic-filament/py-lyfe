@@ -9,3 +9,8 @@ test:
   extends:
     service: base
   command: py.test
+test-dev:
+  extends:
+    service: test
+  volumes:
+    - ./app:/srv/app

@@ -1,7 +1,6 @@
 import pytest
-import json
-from app import server, arithmetic
-import functools
+from app import server
+from flask.ext.api import status
 
 
 @pytest.fixture
@@ -10,28 +9,13 @@ def client():
     return server.app.test_client()
 
 
-def test_receive_json(client):
-    payload = {'title': 'Hello world!'}
-    response = client.post(
-        '/receive-json',
-        data=json.dumps(payload),
-        content_type='application/json'
-    )
-
-    assert response.status_code == 200
-    d = json.loads(response.get_data(as_text=True))
-    assert d['title'] == payload['title']
+def test_home(client):
+    response = client.get('/')
+    assert status.is_success(response.status_code)
+    assert response.get_data(as_text=True) == 'Hello, world!'
 
 
-def test_add(client):
-    numbers = range(1, 10)
-    payload = {'numbers': list(numbers)}
-    response = client.post(
-        '/add',
-        data=json.dumps(payload),
-        content_type='application/json'
-    )
-
-    assert response.status_code == 200
-    d = json.loads(response.get_data(as_text=True))
-    assert d['sum'] == functools.reduce(arithmetic.add, numbers)
+def test_ping(client):
+    response = client.get('/ping')
+    assert status.is_success(response.status_code)
+    assert response.get_data(as_text=True) == 'Pong'
