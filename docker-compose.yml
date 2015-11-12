@@ -1,5 +1,8 @@
 base:
   image: ihsw/py-lyfe
+web-test:
+  extends:
+    service: base
 web:
   extends:
     service: base
