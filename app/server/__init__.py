@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -11,3 +11,8 @@ def home():
 @app.route('/ping')
 def ping():
     return 'Pong'
+
+
+@app.route('/reflection', methods=['POST'])
+def reflection():
+    return jsonify(request.json)

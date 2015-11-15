@@ -8,6 +8,13 @@ web:
     service: base
   ports:
     - 80:80
+web-dev:
+  extends:
+    service: base
+  ports:
+    - 80:80
+  volumes:
+    - ./app:/srv/app
 test:
   extends:
     service: base
