@@ -10,6 +10,14 @@ def client():
     return server.app.test_client()
 
 
+def _test_json(client, url, body):
+    response = client.post(url, data=json.dumps(body),
+                           content_type='application/json')
+    assert status.is_success(response.status_code)
+    response_body = json.loads(response.get_data(as_text=True))
+    return response_body
+
+
 def test_home(client):
     response = client.get('/')
     assert status.is_success(response.status_code)
@@ -24,8 +32,5 @@ def test_ping(client):
 
 def test_reflection(client):
     body = {'greeting': 'Hello, world!'}
-    response = client.post('/reflection', data=json.dumps(body),
-                           content_type='application/json')
-    assert status.is_success(response.status_code)
-    response_body = json.loads(response.get_data(as_text=True))
+    response_body = _test_json(client, '/reflection', body)
     assert response_body['greeting'] == body['greeting']
