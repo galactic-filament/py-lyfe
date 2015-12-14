@@ -1,5 +1,8 @@
 FROM python
 
+RUN apt-get update -q \
+  && apt-get install -yq netcat
+
 EXPOSE 80
 
 COPY ./app /srv/app

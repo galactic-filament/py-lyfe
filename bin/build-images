@@ -1,3 +1,4 @@
 #! /bin/bash
 
-docker build -t ihsw/py-lyfe .
+docker build -t ihsw/py-lyfe . \
+  && docker build -t ihsw/py-lyfe-db ./db

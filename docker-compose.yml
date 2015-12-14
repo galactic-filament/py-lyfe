@@ -1,13 +1,26 @@
+db:
+  image: ihsw/py-lyfe-db
+
 base:
   image: ihsw/py-lyfe
+test-base:
+  extends:
+    service: base
+  command: ./bin/run-tests
+
 web-test:
   extends:
     service: base
+  links:
+    - db
+
 web:
   extends:
     service: base
   ports:
     - 80:80
+  links:
+    - db
 web-dev:
   extends:
     service: base
@@ -15,12 +28,18 @@ web-dev:
     - 80:80
   volumes:
     - ./app:/srv/app
+  links:
+    - db
+
 test:
   extends:
-    service: base
-  command: py.test
+    service: test-base
+  links:
+    - db
 test-dev:
   extends:
-    service: test
+    service: test-base
   volumes:
     - ./app:/srv/app
+  links:
+    - db
