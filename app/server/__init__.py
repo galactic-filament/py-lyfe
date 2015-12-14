@@ -1,8 +1,14 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres@db/postgres'
+
+host = 'db'
+if os.environ['ENV'] == 'travis':
+    host = 'localhost'
+uri = 'postgres://postgres@{0}/postgres'.format(host)
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
 db = SQLAlchemy(app)
 
 

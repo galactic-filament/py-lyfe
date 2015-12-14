@@ -3,6 +3,8 @@ db:
 
 base:
   image: ihsw/py-lyfe
+  environment:
+    - ENV=local
 test-base:
   extends:
     service: base
