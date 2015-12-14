@@ -34,3 +34,9 @@ def test_reflection(client):
     body = {'greeting': 'Hello, world!'}
     response_body = _test_json(client, '/reflection', body)
     assert response_body['greeting'] == body['greeting']
+
+
+def test_posts(client):
+    body = {'body': 'Hello, world!'}
+    response_body = _test_json(client, '/posts', body)
+    assert type(response_body['id']) is int
