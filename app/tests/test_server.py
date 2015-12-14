@@ -23,7 +23,9 @@ def test_ping(client):
 
 
 def test_reflection(client):
-    response = client.post('/reflection',
-                           data=json.dumps({'greeting': 'Hello, world!'}),
+    body = {'greeting': 'Hello, world!'}
+    response = client.post('/reflection', data=json.dumps(body),
                            content_type='application/json')
     assert status.is_success(response.status_code)
+    response_body = json.loads(response.get_data(as_text=True))
+    assert response_body['greeting'] == body['greeting']
