@@ -12,12 +12,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = uri
 db = SQLAlchemy(app)
 
 
-class Posts(db.Model):
+class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(120))
-
-    def __init__(self, body):
-        self.body = body
+    body = db.Column(db.String(32))
 
 
 @app.route('/')
@@ -37,7 +34,8 @@ def reflection():
 
 @app.route('/posts', methods=['POST'])
 def posts():
-    post = Posts(request.json['body'])
+    post = Post()
+    post.body = request.json['body']
     db.session.add(post)
     db.session.commit()
     return jsonify({'id': post.id})
