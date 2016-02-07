@@ -67,4 +67,4 @@ def test_delete_post(client):
 
     # deleting the post
     url = '/post/{0}'.format(create_response_body['id'])
-    delete_response = _test_json(client, 'delete', url)
+    _test_json(client, 'delete', url)
