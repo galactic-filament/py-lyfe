@@ -16,6 +16,9 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(32))
 
+    def as_dict(self):
+        return {'id': self.id, 'body': self.body}
+
 
 @app.route('/')
 def home():
@@ -38,4 +41,10 @@ def posts():
     post.body = request.json['body']
     db.session.add(post)
     db.session.commit()
-    return jsonify({'id': post.id})
+    return jsonify(post.as_dict())
+
+
+@app.route('/post/<int:id>', methods=['GET'])
+def get_post(id):
+    post = Post.query.filter_by(id=id).first()
+    return jsonify(post.as_dict())
