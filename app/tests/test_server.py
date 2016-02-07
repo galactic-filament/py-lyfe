@@ -58,3 +58,13 @@ def test_get_post(client):
     url = '/post/{0}'.format(create_response_body['id'])
     get_response_body = _test_json(client, 'get', url)
     assert get_response_body['body'] == create_response_body['body']
+
+
+def test_delete_post(client):
+    # creating a post
+    body = {'body': 'Hello, world!'}
+    create_response_body = _create_post(client, body)
+
+    # deleting the post
+    url = '/post/{0}'.format(create_response_body['id'])
+    delete_response = _test_json(client, 'delete', url)

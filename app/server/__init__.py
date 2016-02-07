@@ -48,3 +48,11 @@ def posts():
 def get_post(id):
     post = Post.query.filter_by(id=id).first()
     return jsonify(post.as_dict())
+
+
+@app.route('/post/<int:id>', methods=['DELETE'])
+def delete_post(id):
+    post = Post.query.filter_by(id=id).first()
+    db.session.delete(post)
+    db.session.commit()
+    return jsonify([])
