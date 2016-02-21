@@ -1,5 +1,5 @@
 # imports
-from flask import Flask, jsonify, request
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -15,21 +15,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = uri
 db = SQLAlchemy(app)
 
 # blueprints init
-from app.server.posts import posts_blueprint
-app.register_blueprint(posts_blueprint)
-
-
-# misc route init
-@app.route('/')
-def home():
-    return 'Hello, world!'
-
-
-@app.route('/ping')
-def ping():
-    return 'Pong'
-
-
-@app.route('/reflection', methods=['POST'])
-def reflection():
-    return jsonify(request.json)
+from app.server import default, posts
+app.register_blueprint(default.default_blueprint)
+app.register_blueprint(posts.posts_blueprint)
