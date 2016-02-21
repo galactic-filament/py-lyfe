@@ -68,3 +68,15 @@ def test_delete_post(client):
     # deleting the post
     url = '/post/{0}'.format(create_response_body['id'])
     _test_json(client, 'delete', url)
+
+
+def test_put_post(client):
+    # creating a post
+    body = {'body': 'Hello, world!'}
+    create_response_body = _create_post(client, body)
+
+    # updating the post
+    url = '/post/{0}'.format(create_response_body['id'])
+    body = {'body': 'Jello, world!'}
+    put_response_body = _test_json(client, 'put', url, body)
+    assert body['body'] == put_response_body['body']

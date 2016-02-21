@@ -56,3 +56,12 @@ def delete_post(id):
     db.session.delete(post)
     db.session.commit()
     return jsonify([])
+
+
+@app.route('/post/<int:id>', methods=['PUT'])
+def put_post(id):
+    post = Post.query.filter_by(id=id).first()
+    post.body = request.json['body']
+    db.session.add(post)
+    db.session.commit()
+    return jsonify(post.as_dict())
