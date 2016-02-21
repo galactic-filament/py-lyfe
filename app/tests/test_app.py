@@ -1,13 +1,13 @@
 import pytest
-from app import server
+from app import app
 from flask.ext.api import status
 from flask import json
 
 
 @pytest.fixture
 def client():
-    server.app.debug = True
-    return server.app.test_client()
+    app.debug = True
+    return app.test_client()
 
 
 def _test_json(client, method, url, body=None):
