@@ -12,6 +12,7 @@ if os.environ['ENV'] == 'travis':
     host = 'localhost'
 uri = 'postgres://postgres@{0}/postgres'.format(host)
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # blueprints init
