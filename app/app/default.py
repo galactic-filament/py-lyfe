@@ -1,11 +1,8 @@
-# imports
 from flask import Blueprint, jsonify, request
 
-# blueprint init
 default_blueprint = Blueprint('default', __name__)
 
 
-# routes
 @default_blueprint.route('/')
 def home():
     return 'Hello, world!'
