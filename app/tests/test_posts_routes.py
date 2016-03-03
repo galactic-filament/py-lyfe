@@ -1,7 +1,5 @@
 import pytest
 from app import app
-from flask.ext.api import status
-from flask import json
 from tests import request_json, create_post
 
 

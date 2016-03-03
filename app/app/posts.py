@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+from requests import codes
 
 posts_blueprint = Blueprint('posts', __name__)
 
@@ -17,7 +18,7 @@ def get_blueprint(db):
         post.body = request.json['body']
         db.session.add(post)
         db.session.commit()
-        return jsonify(post.as_dict())
+        return jsonify(post.as_dict()), codes.created
 
     @posts_blueprint.route('/post/<int:id>', methods=['GET'])
     def get_post(id):
