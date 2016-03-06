@@ -6,7 +6,7 @@ posts_blueprint = Blueprint('posts', __name__)
 
 def get_blueprint(db):
     class Post(db.Model):
-        __tablename__ = 'Posts'
+        __tablename__ = 'posts'
         id = db.Column(db.Integer, primary_key=True)
         body = db.Column(db.String(32))
 
