@@ -7,10 +7,7 @@ from app import default, posts
 app = Flask(__name__)
 
 # db init
-host = 'db'
-if os.environ['ENV'] == 'travis':
-    host = 'localhost'
-uri = 'postgres://postgres@{0}/postgres'.format(host)
+uri = 'postgres://postgres@{0}/postgres'.format(os.environ['DATABASE_HOST'])
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
