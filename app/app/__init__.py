@@ -9,7 +9,7 @@ from app import default, posts
 app = Flask(__name__)
 
 # flask logging
-if os.environ['REQUEST_LOGGING']:
+if os.environ.get('REQUEST_LOGGING'):
     log_handler = logging.FileHandler('/var/log/app.log')
     log_handler.setFormatter(jsonlogger.JsonFormatter())
     app.logger.setLevel(logging.INFO)
