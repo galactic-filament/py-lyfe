@@ -9,16 +9,17 @@ from app import default, posts
 app = Flask(__name__)
 
 # flask logging
-log_handler = logging.FileHandler('/var/log/app.log')
-log_handler.setFormatter(jsonlogger.JsonFormatter())
-app.logger.setLevel(logging.INFO)
-app.logger.addHandler(log_handler)
-@app.after_request
-def log_request(response):
-    app.logger.info('Url hit', extra={
-        'status': response.status_code
-    })
-    return response
+if os.environ['REQUEST_LOGGING']:
+    log_handler = logging.FileHandler('/var/log/app.log')
+    log_handler.setFormatter(jsonlogger.JsonFormatter())
+    app.logger.setLevel(logging.INFO)
+    app.logger.addHandler(log_handler)
+    @app.after_request
+    def log_request(response):
+        app.logger.info('Url hit', extra={
+            'status': response.status_code
+        })
+        return response
 
 # db init
 uri = 'postgres://postgres@{0}/postgres'.format(os.environ['DATABASE_HOST'])
