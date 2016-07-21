@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 import os
 import logging
+import json
 from pythonjsonlogger import jsonlogger
 from app import default, posts
 
@@ -14,12 +15,16 @@ if os.environ.get('REQUEST_LOGGING'):
     log_handler.setFormatter(jsonlogger.JsonFormatter())
     app.logger.setLevel(logging.INFO)
     app.logger.addHandler(log_handler)
-    @app.after_request
-    def log_request(response):
+    @app.before_request
+    def log_request():
+        body = '' if not request.json else json.dumps(request.json)
+
         app.logger.info('Url hit', extra={
-            'status': response.status_code
+            'contentType': request.headers['content-type'],
+            'method': request.method,
+            'url': request.path,
+            'body': body
         })
-        return response
 
 # db init
 uri = 'postgres://postgres@{0}/postgres'.format(os.environ['DATABASE_HOST'])
