@@ -10,4 +10,4 @@ WORKDIR /srv/app
 
 RUN pip install -r requirements.txt
 
-CMD ["python", "./run.py"]
+CMD ["./bin/run-app"]
