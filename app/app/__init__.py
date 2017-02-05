@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # flask logging
 if os.environ.get('REQUEST_LOGGING'):
-    log_handler = logging.FileHandler('/var/log/app.log')
+    log_handler = logging.FileHandler('{0}/app.log'.format(os.environ['APP_LOG_DIR']))
     log_handler.setFormatter(jsonlogger.JsonFormatter())
     app.logger.setLevel(logging.INFO)
     app.logger.addHandler(log_handler)

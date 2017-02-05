@@ -6,6 +6,8 @@ base:
   environment:
     - DATABASE_HOST=Db
     - REQUEST_LOGGING=true
+    - APP_PORT=80
+    - APP_LOG_DIR=/srv/app/log
 test-base:
   extends:
     service: base
@@ -23,5 +25,5 @@ test-dev:
     - ./app:/srv/app
   links:
     - db:Db
-  external_links:
-    - elk-server:log-egress
+  # external_links:
+    # - elk-server:log-egress
