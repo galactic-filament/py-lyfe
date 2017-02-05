@@ -21,6 +21,8 @@ before_install:
 - cd ./app
 install:
 - pip install -r requirements.txt
+before_script:
+- mkdir $APP_LOG_DIR
 script: ./bin/run-tests
 after_success:
 - test $TRAVIS_PYTHON_VERSION == "3.5" && ../bin/docker-push ihsw/py-lyfe
