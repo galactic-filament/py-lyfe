@@ -5,6 +5,7 @@ base:
   image: ihsw/py-lyfe
   environment:
     - DATABASE_HOST=Db
+    - REQUEST_LOGGING=true
 test-base:
   extends:
     service: base
@@ -22,3 +23,5 @@ test-dev:
     - ./app:/srv/app
   links:
     - db:Db
+  external_links:
+    - elk-server:log-egress
