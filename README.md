@@ -11,7 +11,7 @@ Web Framework | [Flask](http://flask.pocoo.org/)
 SQL ORM | [SqlAlchemy](http://www.sqlalchemy.org/)
 Logging | stdlib
 Test Framework | [pytest](https://docs.pytest.org/en/latest/)
-Test Coverage | n/a
+Test Coverage | [pytest-coverage](http://pytest-cov.readthedocs.io/en/latest/)
 
 ## Features Implemented
 
