@@ -1,6 +1,7 @@
 # py-lyfe
 
 [![Build Status](https://travis-ci.org/galactic-filament/py-lyfe.svg?branch=master)](https://travis-ci.org/galactic-filament/py-lyfe)
+[![Coverage Status](https://coveralls.io/repos/github/galactic-filament/py-lyfe/badge.svg?branch=master)](https://coveralls.io/github/galactic-filament/py-lyfe?branch=master)
 
 ## Libraries
 
