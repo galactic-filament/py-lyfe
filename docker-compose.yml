@@ -1,26 +1,55 @@
-db:
-  image: ihsw/py-lyfe-db
+version: '2'
+services:
+  # resources
+  db:
+    build:
+      context: ./db
 
-base:
-  image: ihsw/py-lyfe
-  environment:
+  # base images
+  base:
+    build:
+      context: .
+  test-base:
+    extends:
+      service: base
+    command: ./bin/run-tests
+
+  # test services
+  test:
+    extends:
+      service: test-base
+    links:
+    - db:Db
+    environment:
     - DATABASE_HOST=Db
-    - APP_PORT=80
-    - APP_LOG_DIR=/srv/app/log
-test-base:
-  extends:
-    service: base
-  command: ./bin/run-tests
-
-test:
-  extends:
-    service: test-base
-  links:
+  test-dev:
+    extends:
+      service: test-base
+    environment:
+    - DATABASE_HOST=Db
+    links:
     - db:Db
-test-dev:
-  extends:
-    service: test-base
-  volumes:
+    volumes:
     - ./app:/srv/app
-  links:
+
+  # prod services
+  web:
+    extends:
+      service: base
+    environment:
+    - DATABASE_HOST=Db
+    links:
     - db:Db
+    ports:
+    - 8080:80
+  web-dev:
+    extends:
+      service: base
+    environment:
+    - DATABASE_HOST=Db
+    links:
+    - db:Db
+    ports:
+    - 8080:80
+    volumes:
+    - ./app:/srv/app
