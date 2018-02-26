@@ -1,9 +1,7 @@
 sudo: required
 language: python
 python:
-- 2.7
 - 3.6
-- nightly
 services:
 - postgresql
 - docker
@@ -26,5 +24,5 @@ before_script:
 script:
 - ./bin/run-tests
 - coveralls
-after_success:
-- test $TRAVIS_PYTHON_VERSION == "3.6" && git clean -xfd && ../bin/docker-push ihsw/py-lyfe
+- git clean -xfd && docker build -t ihsw/py-lyfe ../
+- ../bin/docker-push ihsw/py-lyfe
