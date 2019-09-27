@@ -4,3 +4,5 @@ __pycache__
 app/log
 app/htmlcov
 .coverage
+.idea
+venv
