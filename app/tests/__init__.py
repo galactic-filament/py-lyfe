@@ -1,5 +1,10 @@
+import logging
+from unittest.mock import MagicMock
+
 from flask import json
 from requests import codes
+
+from app import create_app
 
 
 def request_json(client, method, url, body=None, status=codes.ok):
@@ -16,3 +21,16 @@ def create_post(client, body):
     assert type(response_body['id']) is int
 
     return response_body
+
+
+def create_test_app():
+    class MockFileHandler:
+        def setFormatter(self, formatter):
+            pass
+
+    logging.FileHandler = MagicMock(return_value=MockFileHandler())
+
+    app = create_app('', '')
+    app.debug = True
+
+    return app
