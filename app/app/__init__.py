@@ -4,7 +4,7 @@ import os
 import logging
 import json
 from pythonjsonlogger import jsonlogger
-from app import default, posts
+from app.app import default, posts
 
 # flask init
 app = Flask(__name__)
@@ -14,6 +14,8 @@ log_handler = logging.FileHandler('{0}/app.log'.format(os.environ['APP_LOG_DIR']
 log_handler.setFormatter(jsonlogger.JsonFormatter())
 app.logger.setLevel(logging.INFO)
 app.logger.addHandler(log_handler)
+
+
 @app.before_request
 def log_request():
     body = '' if not request.json else json.dumps(request.json)
@@ -24,6 +26,7 @@ def log_request():
         'url': request.path,
         'body': body
     })
+
 
 # db init
 uri = 'postgres://postgres@{0}/postgres'.format(os.environ['DATABASE_HOST'])

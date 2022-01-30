@@ -1,7 +1,8 @@
 import pytest
+from requests import codes
+
 from app import app
-from flask.ext.api import status
-from tests import request_json
+from app.tests import request_json
 
 
 @pytest.fixture
@@ -12,13 +13,13 @@ def client():
 
 def test_home(client):
     response = client.get('/')
-    assert status.is_success(response.status_code)
+    assert response.status_code == codes.ok
     assert response.get_data(as_text=True) == 'Hello, world!'
 
 
 def test_ping(client):
     response = client.get('/ping')
-    assert status.is_success(response.status_code)
+    assert response.status_code == codes.ok
     assert response.get_data(as_text=True) == 'Pong'
 
 
