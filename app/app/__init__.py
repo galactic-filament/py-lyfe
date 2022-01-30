@@ -4,9 +4,10 @@ import os
 import logging
 import json
 from pythonjsonlogger import jsonlogger
-from app.app import default, posts
+from app import default, posts
 
 # flask init
+
 app = Flask(__name__)
 
 # flask logging

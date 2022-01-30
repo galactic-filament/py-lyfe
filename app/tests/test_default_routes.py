@@ -2,7 +2,7 @@ import pytest
 from requests import codes
 
 from app import app
-from app.tests import request_json
+from tests import request_json
 
 
 @pytest.fixture
