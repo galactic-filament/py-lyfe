@@ -25,7 +25,12 @@ def create_post(client, body):
 
 def create_test_app():
     class MockFileHandler:
+        level = logging.INFO
+
         def setFormatter(self, formatter):
+            pass
+
+        def handle(self, record):
             pass
 
     logging.FileHandler = MagicMock(return_value=MockFileHandler())

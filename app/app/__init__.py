@@ -21,9 +21,10 @@ def create_app(db_host, app_log_dir):
     @app.before_request
     def log_request():
         body = '' if not request.json else json.dumps(request.json)
+        content_type = '' if not ('content-type' in request.headers) else request.headers['content-type']
 
         app.logger.info('Url hit', extra={
-            'contentType': request.headers['content-type'],
+            'contentType': content_type,
             'method': request.method,
             'url': request.path,
             'body': body
