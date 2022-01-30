@@ -1,13 +1,15 @@
 import pytest
 from requests import codes
 
-from app import app
+from app import create_app
 from tests import request_json
 
 
 @pytest.fixture
 def client():
+    app = create_app('', '')
     app.debug = True
+
     return app.test_client()
 
 

@@ -1,4 +1,5 @@
 import pytest
+
 from app import app
 from tests import request_json, create_post
 
