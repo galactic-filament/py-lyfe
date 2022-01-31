@@ -23,14 +23,21 @@ def test_posts(client):
 
 
 def test_get_post(client):
-    # creating a post
-    body = {"body": "Hello, world!"}
-    create_response_body = create_post(client, body)
+    with patch.object(MockDao, "add") as mock_method:
 
-    # getting the post and asserting they match
-    url = "/post/{0}".format(create_response_body["id"])
-    get_response_body = request_json(client, "get", url)
-    assert get_response_body["body"] == create_response_body["body"]
+        def side_effect(post):
+            post.id = 1
+
+        mock_method.side_effect = side_effect
+
+        # creating a post
+        body = {"body": "Hello, world!"}
+        create_response_body = create_post(client, body)
+
+        # getting the post and asserting they match
+        url = "/post/{0}".format(create_response_body["id"])
+        get_response_body = request_json(client, "get", url)
+        assert get_response_body["body"] == create_response_body["body"]
 
 
 def test_delete_post(client):

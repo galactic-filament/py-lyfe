@@ -1,7 +1,9 @@
+import json
+
 import pytest
 from requests import codes
 
-from tests import request_json, create_test_app
+from tests import create_test_app
 
 
 @pytest.fixture
@@ -23,5 +25,10 @@ def test_ping(client):
 
 def test_reflection(client):
     body = {"greeting": "Hello, world!"}
-    response_body = request_json(client, "post", "/reflection", body)
+    response = client.post(
+        "/reflection", data=json.dumps(body), content_type="application/json"
+    )
+    assert response.status_code == codes.ok
+
+    response_body = json.loads(response.get_data(as_text=True))
     assert response_body["greeting"] == body["greeting"]
