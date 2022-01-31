@@ -1,6 +1,8 @@
+from unittest.mock import patch
+
 import pytest
 
-from tests import create_post, request_json, create_test_app
+from tests import create_post, request_json, create_test_app, MockDao
 
 
 @pytest.fixture
@@ -9,8 +11,15 @@ def client():
 
 
 def test_posts(client):
-    body = {"body": "Hello, world!"}
-    create_post(client, body)
+    with patch.object(MockDao, "add") as mock_method:
+
+        def side_effect(post):
+            post.id = 1
+
+        mock_method.side_effect = side_effect
+
+        body = {"body": "Hello, world!"}
+        create_post(client, body)
 
 
 def test_get_post(client):

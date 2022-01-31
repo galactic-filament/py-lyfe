@@ -22,19 +22,33 @@ def create_post(client, body):
     return response_body
 
 
+class MockDao:
+    def __init__(self, _db):
+        pass
+
+    def init_app(self, _app):
+        pass
+
+    def add(self, _record):
+        pass
+
+    def delete(self, _record):
+        pass
+
+
 def create_test_app():
     class MockFileHandler:
         level = logging.INFO
 
-        def setFormatter(self, formatter):
+        def setFormatter(self, _formatter):
             pass
 
-        def handle(self, record):
+        def handle(self, _record):
             pass
 
     logging.FileHandler = MagicMock(return_value=MockFileHandler())
 
-    app = create_app("", "")
+    app = create_app("", MockDao(None), "")
     app.debug = True
 
     return app
