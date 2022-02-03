@@ -48,6 +48,6 @@ def create_app(db_host, app_log_dir):
 
     # blueprints
     app.register_blueprint(default_blueprint)
-    app.register_blueprint(posts.get_blueprint(db))
+    app.register_blueprint(posts.get_blueprint())
 
     return app

@@ -1,18 +1,19 @@
 from flask import Blueprint, jsonify, request
 from requests import codes
 
+from models import db
 from models.post import Post, find_post_by_id
 
 posts_blueprint = Blueprint("posts", __name__)
 
 
-def get_blueprint(db):
+def get_blueprint():
     @posts_blueprint.route("/posts", methods=["POST"])
     def posts():
         post = Post()
         post.body = request.json["body"]
-        db.add(post)
-        db.commit()
+        db.session.add(post)
+        db.session.commit()
 
         return jsonify(post.as_dict()), codes.created
 
@@ -24,9 +25,9 @@ def get_blueprint(db):
 
     @posts_blueprint.route("/post/<int:post_id>", methods=["DELETE"])
     def delete_post(post_id):
-        post = Post.query.filter_by(id=post_id).first()
-        db.delete(post)
-        db.commit()
+        post = find_post_by_id(post_id)
+        db.session.delete(post)
+        db.session.commit()
 
         return jsonify([])
 
@@ -34,8 +35,8 @@ def get_blueprint(db):
     def put_post(post_id):
         post = Post.query.filter_by(id=post_id).first()
         post.body = request.json["body"]
-        db.add(post)
-        db.commit()
+        db.session.add(post)
+        db.session.commit()
 
         return jsonify(post.as_dict())
 

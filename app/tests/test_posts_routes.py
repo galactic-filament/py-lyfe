@@ -24,6 +24,22 @@ def test_get_post():
         assert response_body["id"] == mock_post_id
 
 
+def test_delete_post():
+    with patch("blueprints.posts.find_post_by_id") as mock_find_post_by_id, patch(
+        "blueprints.posts.db.session.delete"
+    ) as mock_delete, patch("blueprints.posts.db.session.commit") as mock_commit:
+        mock_post = Post()
+        mock_post.id = mock_post_id
+        mock_find_post_by_id.return_value = mock_post
+
+        mock_delete.return_value = None
+        mock_commit.return_value = None
+
+        test_client = create_test_app().test_client()
+        response = test_client.delete("/post/{0}".format(mock_post_id))
+        assert response.status_code == codes.ok
+
+
 # def test_posts(mock_client):
 #     with patch.object(MockDao, "add") as mock_method:
 #
@@ -43,15 +59,6 @@ def test_get_post():
 #         assert response_body["id"] == mock_post_id
 
 
-# def test_delete_post(client):
-#     # creating a post
-#     body = {"body": "Hello, world!"}
-#     create_response_body = create_post(client, body)
-#
-#     # deleting the post
-#     url = "/post/{0}".format(create_response_body["id"])
-#     request_json(client, "delete", url)
-#
 #
 # def test_put_post(client):
 #     # creating a post
