@@ -1,14 +1,16 @@
 import json
 import logging
+from logging import FileHandler
 
 from flask import Flask, request
 from pythonjsonlogger import jsonlogger
 
 from blueprints import posts
 from blueprints.default import default_blueprint
+from models import db
 
 
-def create_app(db_host, dao, app_log_dir):
+def create_app(db_host, app_log_dir):
     app = Flask(__name__)
 
     # db init
@@ -16,7 +18,7 @@ def create_app(db_host, dao, app_log_dir):
         db_host
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    dao.init_app(app)
+    db.init_app(app)
 
     # request logging
     @app.before_request
@@ -39,13 +41,13 @@ def create_app(db_host, dao, app_log_dir):
         )
 
     # flask logging
-    log_handler = logging.FileHandler("{0}/app.log".format(app_log_dir))
+    log_handler = FileHandler("{0}/app.log".format(app_log_dir))
     log_handler.setFormatter(jsonlogger.JsonFormatter())
     app.logger.setLevel(logging.INFO)
     app.logger.addHandler(log_handler)
 
     # blueprints
     app.register_blueprint(default_blueprint)
-    app.register_blueprint(posts.get_blueprint(dao))
+    app.register_blueprint(posts.get_blueprint(db))
 
     return app

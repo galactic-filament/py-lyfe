@@ -1,6 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from models import db
 
 
 class Post(db.Model):
@@ -10,3 +8,7 @@ class Post(db.Model):
 
     def as_dict(self):
         return {"id": self.id, "body": self.body}
+
+
+def find_post_by_id(post_id):
+    return Post.query.filter_by(id=post_id).first()
