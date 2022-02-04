@@ -29,5 +29,5 @@
 - [ ] Password encryption using bcrypt
 - [ ] Routes protected via Bearer token authentication
 - [ ] Routes protected via ACLs
-- [ ] Forms protected by CSRF
+- [ ] [Forms protected by CSRF](https://flask-wtf.readthedocs.io/en/1.0.x/)
 - [x] Validates environment (env vars, database host and port are accessible)
