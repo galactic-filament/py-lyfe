@@ -1,6 +1,6 @@
 import os
-import sys
 import socket
+import sys
 
 # validating that env vars are available
 env_var_names = ["APP_PORT", "APP_LOG_DIR", "DATABASE_HOST"]
@@ -27,7 +27,7 @@ except ConnectionRefusedError as e:
     sys.exit(1)
 
 # validating that the log dir exists
-if os.path.exists(env_vars["APP_LOG_DIR"]) == False:
+if not os.path.exists(env_vars["APP_LOG_DIR"]):
     print("{0} log dir does not exist".format(env_vars["APP_LOG_DIR"]))
 
     sys.exit(1)

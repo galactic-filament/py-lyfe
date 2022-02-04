@@ -1,4 +1,0 @@
-#!/bin/bash
-
-python ./bin/validate-environment.py \
-  && py.test --cov=./app --cov-report=html
