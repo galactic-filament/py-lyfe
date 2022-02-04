@@ -35,4 +35,5 @@ jobs:
     - name: Test with pytest
       run: |
         cd app
+        poetry install
         py.test --cov=. --cov-report=html
