@@ -4,27 +4,25 @@ from unittest.mock import patch
 from requests import codes
 
 from models.post import Post
-from tests import create_test_app
 
 mock_create_post_body = {"body": "Hello, world!"}
 mock_post_id = 1
 
 
-def test_get_post():
+def test_get_post(mock_client):
     with patch("blueprints.posts.find_post_by_id") as mock_find_post_by_id:
         mock_post = Post()
         mock_post.id = mock_post_id
         mock_find_post_by_id.return_value = mock_post
 
-        test_client = create_test_app().test_client()
-        response = test_client.get("/post/{0}".format(mock_post_id))
+        response = mock_client.get("/post/{0}".format(mock_post_id))
         assert response.status_code == codes.ok
 
         response_body = json.loads(response.get_data(as_text=True))
         assert response_body["id"] == mock_post_id
 
 
-def test_delete_post():
+def test_delete_post(mock_client):
     with patch("blueprints.posts.find_post_by_id") as mock_find_post_by_id, patch(
         "blueprints.posts.db.session.delete"
     ) as mock_delete, patch("blueprints.posts.db.session.commit") as mock_commit:
@@ -35,12 +33,11 @@ def test_delete_post():
         mock_delete.return_value = None
         mock_commit.return_value = None
 
-        test_client = create_test_app().test_client()
-        response = test_client.delete("/post/{0}".format(mock_post_id))
+        response = mock_client.delete("/post/{0}".format(mock_post_id))
         assert response.status_code == codes.ok
 
 
-def test_create_post():
+def test_create_post(mock_client):
     with patch("blueprints.posts.db.session.add") as mock_add, patch(
         "blueprints.posts.db.session.commit"
     ) as mock_commit:
@@ -51,8 +48,7 @@ def test_create_post():
         mock_add.side_effect = mock_add_side_effect
         mock_commit.return_value = None
 
-        test_client = create_test_app().test_client()
-        response = test_client.post(
+        response = mock_client.post(
             "/posts",
             data=json.dumps(mock_create_post_body),
             content_type="application/json",
