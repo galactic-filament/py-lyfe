@@ -33,7 +33,7 @@ def get_blueprint():
 
     @posts_blueprint.route("/post/<int:post_id>", methods=["PUT"])
     def put_post(post_id):
-        post = Post.query.filter_by(id=post_id).first()
+        post = find_post_by_id(post_id)
         post.body = request.json["body"]
         db.session.add(post)
         db.session.commit()

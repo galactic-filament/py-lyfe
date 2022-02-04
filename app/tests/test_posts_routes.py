@@ -59,14 +59,25 @@ def test_create_post(mock_client):
         assert response_body["id"] == mock_post_id
 
 
-#
-# def test_put_post(client):
-#     # creating a post
-#     body = {"body": "Hello, world!"}
-#     create_response_body = create_post(client, body)
-#
-#     # updating the post
-#     url = "/post/{0}".format(create_response_body["id"])
-#     body = {"body": "Jello, world!"}
-#     put_response_body = request_json(client, "put", url, body)
-#     assert body["body"] == put_response_body["body"]
+def test_update_post(mock_client):
+    with patch("blueprints.posts.find_post_by_id") as mock_find_post_by_id, patch(
+        "blueprints.posts.db.session.add"
+    ) as mock_add, patch("blueprints.posts.db.session.commit") as mock_commit:
+        mock_post = Post()
+        mock_post.id = mock_post_id
+        assert mock_post.as_dict()["body"] == None
+
+        mock_find_post_by_id.return_value = mock_post
+
+        mock_add.return_value = None
+        mock_commit.return_value = None
+
+        response = mock_client.put(
+            "/post/{0}".format(mock_post_id),
+            data=json.dumps(mock_create_post_body),
+            content_type="application/json",
+        )
+        assert response.status_code == codes.ok
+
+        response_body = json.loads(response.get_data(as_text=True))
+        assert response_body["body"] == mock_create_post_body["body"]
