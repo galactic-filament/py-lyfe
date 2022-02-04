@@ -25,6 +25,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry flake8 pytest
         cd app
+        ls
         poetry install
 #    - name: Lint with flake8
 #      run: |
@@ -35,5 +36,6 @@ jobs:
     - name: Test with pytest
       run: |
         cd app
+        ls
         poetry install
         py.test --cov=. --cov-report=html
