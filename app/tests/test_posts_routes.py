@@ -40,16 +40,27 @@ def test_delete_post():
         assert response.status_code == codes.ok
 
 
-def test_posts():
+def test_create_post():
     with patch("blueprints.posts.db.session.add") as mock_add, patch(
         "blueprints.posts.db.session.commit"
     ) as mock_commit:
-        mock_add.return_value = None
+
+        def mock_add_side_effect(post):
+            post.id = mock_post_id
+
+        mock_add.side_effect = mock_add_side_effect
         mock_commit.return_value = None
 
         test_client = create_test_app().test_client()
-        response = test_client.post("/posts")
-        assert response.status_code == codes.ok
+        response = test_client.post(
+            "/posts",
+            data=json.dumps(mock_create_post_body),
+            content_type="application/json",
+        )
+        assert response.status_code == codes.created
+
+        response_body = json.loads(response.get_data(as_text=True))
+        assert response_body["id"] == mock_post_id
 
 
 #
