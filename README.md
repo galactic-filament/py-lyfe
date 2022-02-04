@@ -13,7 +13,7 @@
 | Test Framework        | [pytest](https://docs.pytest.org/en/latest/)                   |
 | Test Coverage         | [pytest-coverage](http://pytest-cov.readthedocs.io/en/latest/) |
 | Version Management    | [pyenv](https://github.com/pyenv/pyenv)                        |
-| Dependency Management | [pipenv](https://github.com/pypa/pipenv)                       |
+| Dependency Management | [poetry](https://python-poetry.org/)                           |
 
 ## Features Implemented
 
@@ -21,10 +21,10 @@
 - [x] CRUD routes for persisting posts
 - [x] Database access
 - [x] Request logging to /srv/app/log/app.log
-- [ ] Proper unit tests
+- [x] Proper unit tests
 - [x] Unit test coverage reporting
 - [ ] Automated testing using GitHub Actions
-- [x] Automated coverage reporting using Coveralls
+- [ ] Automated coverage reporting using Coveralls
 - [ ] CRUD routes for user management
 - [ ] Password encryption using bcrypt
 - [ ] Routes protected via Bearer token authentication
