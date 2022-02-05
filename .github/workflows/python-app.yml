@@ -33,8 +33,9 @@ jobs:
         poetry run coverage run -m pytest
         poetry run coverage lcov
         ls -liah
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ./app/coverage.lcov
+    - name: Upload coverage to coveralls.io
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        cd app
+        poetry run coveralls --service=github
