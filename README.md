@@ -1,6 +1,6 @@
 # py-lyfe
 
-[Build Status](#)
+[![py-lyfe](https://github.com/galactic-filament/py-lyfe/actions/workflows/python-app.yml/badge.svg)](https://github.com/galactic-filament/py-lyfe/actions/workflows/python-app.yml)
 [![Coverage Status](https://coveralls.io/repos/github/galactic-filament/py-lyfe/badge.svg?branch=master)](https://coveralls.io/github/galactic-filament/py-lyfe?branch=master)
 
 ## Libraries
@@ -23,8 +23,8 @@
 - [x] Request logging to /srv/app/log/app.log
 - [x] Proper unit tests
 - [x] Unit test coverage reporting
-- [ ] Automated testing using GitHub Actions
-- [ ] Automated coverage reporting using Coveralls
+- [x] Automated testing using GitHub Actions
+- [x] Automated coverage reporting using Coveralls
 - [ ] CRUD routes for user management
 - [ ] Password encryption using bcrypt
 - [ ] Routes protected via Bearer token authentication
