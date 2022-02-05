@@ -35,3 +35,8 @@ jobs:
         cd app
         poetry run py.test --cov=./app --cov-report=xml
         tree .
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: ./coverage.xml
