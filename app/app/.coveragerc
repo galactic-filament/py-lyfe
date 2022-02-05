@@ -1,4 +1,5 @@
 [run]
 omit =
-    app/*
+    app.py
     run.py
+    validate-environment.py
