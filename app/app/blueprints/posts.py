@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request
 from requests import codes
 
-from models import db
-from models.post import Post, find_post_by_id
+from app.models import db
+from app.models.post import Post, find_post_by_id
 
 posts_blueprint = Blueprint("posts", __name__)
 
