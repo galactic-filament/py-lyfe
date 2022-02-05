@@ -5,15 +5,15 @@
 
 ## Libraries
 
-| Kind                  | Name                                                           |
-|-----------------------|----------------------------------------------------------------|
-| Web Framework         | [Flask](http://flask.pocoo.org/)                               |
-| SQL ORM               | [SqlAlchemy](http://www.sqlalchemy.org/)                       |
-| Logging               | stdlib                                                         |
-| Test Framework        | [pytest](https://docs.pytest.org/en/latest/)                   |
-| Test Coverage         | [pytest-coverage](http://pytest-cov.readthedocs.io/en/latest/) |
-| Version Management    | [pyenv](https://github.com/pyenv/pyenv)                        |
-| Dependency Management | [poetry](https://python-poetry.org/)                           |
+| Kind                  | Name                                                  |
+|-----------------------|-------------------------------------------------------|
+| Web Framework         | [Flask](http://flask.pocoo.org/)                      |
+| SQL ORM               | [SqlAlchemy](http://www.sqlalchemy.org/)              |
+| Logging               | stdlib                                                |
+| Test Framework        | [pytest](https://docs.pytest.org/en/latest/)          |
+| Test Coverage         | [coverage](https://coverage.readthedocs.io/en/6.3.1/) |
+| Version Management    | [pyenv](https://github.com/pyenv/pyenv)               |
+| Dependency Management | [poetry](https://python-poetry.org/)                  |
 
 ## Features Implemented
 
