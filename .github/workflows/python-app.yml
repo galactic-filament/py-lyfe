@@ -31,8 +31,6 @@ jobs:
       run: |
         cd app
         poetry run coverage run -m pytest
-        poetry run coverage lcov
-        ls -liah
     - name: Upload coverage to coveralls.io
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
