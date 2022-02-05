@@ -23,9 +23,13 @@ def test_get_post(mock_client):
 
 
 def test_delete_post(mock_client):
-    with patch("blueprints.posts.find_post_by_id") as mock_find_post_by_id, patch(
+    with patch(
+        "blueprints.posts.find_post_by_id"
+    ) as mock_find_post_by_id, patch(
         "blueprints.posts.db.session.delete"
-    ) as mock_delete, patch("blueprints.posts.db.session.commit") as mock_commit:
+    ) as mock_delete, patch(
+        "blueprints.posts.db.session.commit"
+    ) as mock_commit:
         mock_post = Post()
         mock_post.id = mock_post_id
         mock_find_post_by_id.return_value = mock_post
@@ -60,12 +64,16 @@ def test_create_post(mock_client):
 
 
 def test_update_post(mock_client):
-    with patch("blueprints.posts.find_post_by_id") as mock_find_post_by_id, patch(
+    with patch(
+        "blueprints.posts.find_post_by_id"
+    ) as mock_find_post_by_id, patch(
         "blueprints.posts.db.session.add"
-    ) as mock_add, patch("blueprints.posts.db.session.commit") as mock_commit:
+    ) as mock_add, patch(
+        "blueprints.posts.db.session.commit"
+    ) as mock_commit:
         mock_post = Post()
         mock_post.id = mock_post_id
-        assert mock_post.as_dict()["body"] == None
+        assert mock_post.as_dict()["body"] is None
 
         mock_find_post_by_id.return_value = mock_post
 
