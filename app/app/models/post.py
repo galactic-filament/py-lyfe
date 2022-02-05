@@ -1,4 +1,4 @@
-from app.models import db
+from models import db
 
 
 class Post(db.Model):

@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from requests import codes
 
-from app.models.post import Post
+from models.post import Post
 
 mock_create_post_body = {"body": "Hello, world!"}
 mock_post_id = 1
