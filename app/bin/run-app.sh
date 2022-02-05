@@ -1,4 +1,4 @@
 #!/bin/bash
 
-python ./bin/validate-environment.py \
-  && python ./run.py
+python ./app/validate-environment.py \
+  && python ./app/run.py
