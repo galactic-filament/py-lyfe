@@ -1,3 +1,4 @@
 #!/bin/bash
 
-py.test --cov=./app --cov-report=html
+coverage run -m pytest \
+  && coverage html

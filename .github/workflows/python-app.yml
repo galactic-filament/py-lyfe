@@ -33,10 +33,10 @@ jobs:
     - name: Test with pytest
       run: |
         cd app
-        poetry run py.test --cov=./app --cov-report=xml
-        tree .
+        poetry run coverage run -m pytest
+        poetry run coverage lcov
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ./app/coverage.xml
+        path-to-lcov: ./app/coverage.lcov
