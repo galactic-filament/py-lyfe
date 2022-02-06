@@ -1,7 +1,7 @@
 """added posts table
 
 Revision ID: af841657b7d1
-Revises: 
+Revises:
 Create Date: 2022-02-06 12:53:08.384447
 
 """
