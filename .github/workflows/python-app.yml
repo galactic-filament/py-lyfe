@@ -31,6 +31,10 @@ jobs:
       run: |
         cd app
         poetry run coverage run -m pytest
+    - name: Test migrations
+      run: |
+        cd app
+        poetry run alembic -x db=test upgrade head
     - name: Upload coverage to coveralls.io
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
