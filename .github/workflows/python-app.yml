@@ -26,7 +26,7 @@ jobs:
     - name: Lint with flake8
       run: |
         cd app
-        poetry run flake8 ./app --max-complexity 10
+        poetry run flake8 ./app --max-complexity 10 --exclude ./app/alembic
     - name: Test with pytest
       run: |
         cd app
