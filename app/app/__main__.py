@@ -4,5 +4,5 @@ from app import create_app
 
 app = create_app(os.environ["DATABASE_URI"], os.environ["APP_LOG_DIR"])
 
-app.debug = True
-app.run(host="0.0.0.0", port=int(os.environ["APP_PORT"]))
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ["APP_PORT"]))
