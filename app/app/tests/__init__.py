@@ -1,11 +1,11 @@
 import logging
 from unittest.mock import patch
 
-from app import create_app
+from util import create_app
 
 
 def create_test_app():
-    with patch("app.FileHandler") as mock_file_handler:
+    with patch("util.FileHandler") as mock_file_handler:
 
         class MockFileHandler:
             level = logging.INFO

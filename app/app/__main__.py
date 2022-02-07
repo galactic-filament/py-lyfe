@@ -1,6 +1,6 @@
 import os
 
-from app import create_app
+from util import create_app
 
 app = create_app(os.environ["DATABASE_URI"], os.environ["APP_LOG_DIR"])
 
