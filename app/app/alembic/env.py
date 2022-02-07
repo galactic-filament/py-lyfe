@@ -9,6 +9,15 @@ from alembic import context
 
 from models import db
 
+cmd_kwargs = context.get_x_argument(as_dictionary=True)
+if "db" not in cmd_kwargs:
+    raise Exception(
+        "We couldn't find `db` in the CLI arguments. "
+        "Please verify `alembic` was run with `-x db=<db_name>` "
+        "(e.g. `alembic -x db=development upgrade head`)"
+    )
+db_name = cmd_kwargs["db"]
+
 USE_TWOPHASE = False
 
 # this is the Alembic Config object, which provides
@@ -32,7 +41,10 @@ db_names = config.get_main_option("databases")
 # helpful here in case a "copy" of
 # a MetaData is needed.
 # from myapp import mymodel
-target_metadata = {"cicd": db.metadata, "test": db.metadata}
+target_metadata = {"dev": db.metadata, "test": db.metadata}
+
+if db_name not in [x for x in target_metadata]:
+    raise Exception("Invalid db name")
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -57,6 +69,9 @@ def run_migrations_offline():
 
     engines = {}
     for name in re.split(r",\s*", db_names):
+        if name != db_name:
+            continue
+
         engines[name] = rec = {}
         rec["url"] = context.config.get_section_option(name, "sqlalchemy.url")
 
@@ -89,6 +104,9 @@ def run_migrations_online():
 
     engines = {}
     for name in re.split(r",\s*", db_names):
+        if name != db_name:
+            continue
+
         engines[name] = rec = {}
         rec["engine"] = engine_from_config(
             context.config.get_section(name),
