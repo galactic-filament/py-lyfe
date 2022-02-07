@@ -5,8 +5,9 @@ from logging import FileHandler
 from flask import Flask, request
 from pythonjsonlogger import jsonlogger
 
-from blueprints import posts
 from blueprints.default import default_blueprint
+from blueprints.posts import posts_blueprint
+from blueprints.users import users_blueprint
 from models import db
 
 
@@ -46,6 +47,7 @@ def create_app(db_uri, app_log_dir):
 
     # blueprints
     app.register_blueprint(default_blueprint)
-    app.register_blueprint(posts.get_blueprint())
+    app.register_blueprint(posts_blueprint)
+    app.register_blueprint(users_blueprint)
 
     return app
