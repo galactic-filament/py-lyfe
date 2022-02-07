@@ -2,6 +2,7 @@ import json
 from unittest.mock import patch
 
 from requests import codes
+import bcrypt
 
 mock_create_user_body = {"username": "username", "password": "password"}
 mock_user_id = 1
@@ -27,3 +28,7 @@ def test_create_user(mock_client):
 
         response_body = json.loads(response.get_data(as_text=True))
         assert response_body["id"] == mock_user_id
+        assert bcrypt.checkpw(
+            mock_create_user_body["password"].encode(),
+            response_body["hashed_password"].encode(),
+        )

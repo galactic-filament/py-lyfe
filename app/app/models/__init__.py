@@ -15,7 +15,11 @@ class Post(db.Model):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32))
-    password = db.Column(db.String(32))
+    password = db.Column(db.String(60))
 
     def as_dict(self):
-        return {"id": self.id, "username": self.username}
+        return {
+            "id": self.id,
+            "username": self.username,
+            "hashed_password": self.password,
+        }

@@ -1,3 +1,4 @@
+import bcrypt
 from flask import Blueprint, jsonify, request
 from requests import codes
 
@@ -10,7 +11,9 @@ users_blueprint = Blueprint("users", __name__)
 def posts():
     user = User()
     user.username = request.json["username"]
-    user.password = request.json["password"]
+    user.password = bcrypt.hashpw(
+        request.json["password"].encode(), bcrypt.gensalt()
+    ).decode()
     db.session.add(user)
     db.session.commit()
 
