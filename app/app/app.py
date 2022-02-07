@@ -10,13 +10,11 @@ from blueprints.default import default_blueprint
 from models import db
 
 
-def create_app(db_host, app_log_dir):
+def create_app(db_uri, app_log_dir):
     app = Flask(__name__)
 
     # db init
-    app.config[
-        "SQLALCHEMY_DATABASE_URI"
-    ] = "postgres://postgres@{0}/postgres".format(db_host)
+    app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
 
