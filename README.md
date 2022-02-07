@@ -20,6 +20,7 @@
 - [x] Hello world routes
 - [x] CRUD routes for persisting posts
 - [x] Database access
+- [x] Database migrations
 - [x] Request logging to /srv/app/log/app.log
 - [x] Proper unit tests
 - [x] Unit test coverage reporting
