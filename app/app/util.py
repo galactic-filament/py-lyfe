@@ -5,19 +5,16 @@ from logging import FileHandler
 from flask import Flask, request
 from pythonjsonlogger import jsonlogger
 
-from blueprints.default import default_blueprint
-from blueprints.posts import posts_blueprint
-from blueprints.users import users_blueprint
-from models import db
+import blueprints
+import models
 
 
 def create_app(db_uri, app_log_dir):
     app = Flask(__name__)
 
-    # db init
-    app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    db.init_app(app)
+    # misc init
+    models.init_app(app, db_uri)
+    blueprints.register_blueprints(app, "wew lad")
 
     # request logging
     @app.before_request
@@ -44,10 +41,5 @@ def create_app(db_uri, app_log_dir):
     log_handler.setFormatter(jsonlogger.JsonFormatter())
     app.logger.setLevel(logging.INFO)
     app.logger.addHandler(log_handler)
-
-    # blueprints
-    app.register_blueprint(default_blueprint)
-    app.register_blueprint(posts_blueprint)
-    app.register_blueprint(users_blueprint)
 
     return app

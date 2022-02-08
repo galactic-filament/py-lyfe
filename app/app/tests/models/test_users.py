@@ -22,7 +22,7 @@ mock_password = "password"
 
 
 def test_find_user_not_found(mock_db):
-    found_user = User.find_user("", "")
+    found_user = User.find_user_matching_password("", "")
     assert found_user is None
 
 
@@ -33,7 +33,7 @@ def test_find_user_happy_path(mock_db):
     mock_db.session.add(new_user)
     mock_db.session.commit()
 
-    found_user = User.find_user(mock_username, mock_password)
+    found_user = User.find_user_matching_password(mock_username, mock_password)
     assert found_user is not None
 
 

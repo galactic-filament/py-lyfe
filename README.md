@@ -26,9 +26,9 @@
 - [x] Unit test coverage reporting
 - [x] Automated testing using GitHub Actions
 - [x] Automated coverage reporting using Coveralls
-- [ ] CRUD routes for user management
-- [ ] Password encryption using bcrypt
-- [ ] Routes protected via Bearer token authentication
+- [x] CRUD routes for user management
+- [x] Password encryption using bcrypt
+- [x] Routes protected via Bearer token authentication
 - [ ] Routes protected via ACLs
 - [ ] [Forms protected by CSRF](https://flask-wtf.readthedocs.io/en/1.0.x/)
 - [x] Validates environment (env vars, database host and port are accessible)
