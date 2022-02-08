@@ -1,3 +1,4 @@
+import bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -23,3 +24,15 @@ class User(db.Model):
             "username": self.username,
             "hashed_password": self.password,
         }
+
+    @classmethod
+    def find_user(cls, username, password):
+        found_user = User.query.filter_by(username=username).first()
+        if found_user is None:
+            return None
+
+        password_matches = bcrypt.checkpw(password, found_user.password)
+        if not password_matches:
+            return None
+
+        return found_user
