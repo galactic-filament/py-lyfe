@@ -27,14 +27,14 @@ jobs:
       run: |
         cd app
         poetry run flake8 ./app --max-complexity 10 --exclude ./app/alembic
+    - name: Run migrations for integration tests
+      run: |
+        cd app
+        poetry run alembic -x db=test upgrade head
     - name: Test with pytest
       run: |
         cd app
         poetry run coverage run -m pytest
-    - name: Test migrations
-      run: |
-        cd app
-        poetry run alembic -x db=test upgrade head
     - name: Upload coverage to coveralls.io
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
