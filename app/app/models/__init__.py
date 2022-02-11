@@ -15,7 +15,8 @@ class Post(db.Model):
     __tablename__ = "posts"
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(32))
-    comments = db.relationship("Comment", backref="post", lazy=True)
+
+    comments = db.relationship("Comment", back_populates="post")
 
     def as_dict(self):
         return {"id": self.id, "body": self.body}
@@ -26,7 +27,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32))
     hashed_password = db.Column(db.String(60))
-    comments = db.relationship("Comment", backref="user", lazy=True)
+
+    comments = db.relationship("Comment", back_populates="user")
 
     def as_dict(self):
         return {
@@ -79,6 +81,9 @@ class Comment(db.Model):
     body = db.Column(db.String(32))
     post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    user = db.relationship("User", back_populates="comments")
+    post = db.relationship("Post", back_populates="comments")
 
     def as_dict(self):
         return {"id": self.id, "body": self.body}
