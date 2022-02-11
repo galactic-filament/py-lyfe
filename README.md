@@ -27,6 +27,7 @@
 - [x] Automated testing using GitHub Actions
 - [x] Automated coverage reporting using Coveralls
 - [x] CRUD routes for user management
+- [ ] Database model relationships
 - [x] Password encryption using bcrypt
 - [x] Routes protected via Bearer token authentication
 - [ ] Routes protected via ACLs
