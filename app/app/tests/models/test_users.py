@@ -2,7 +2,7 @@ from uuid import uuid4
 
 from models import User
 
-mock_username = uuid4()
+mock_username = str(uuid4())
 mock_password = "password"
 
 
