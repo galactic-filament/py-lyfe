@@ -1,23 +1,8 @@
 from uuid import uuid4
 
-import pytest
+from models import User
 
-from models import db, User
-from tests import create_test_app
-
-test_username_prefix = uuid4()
-
-
-@pytest.fixture
-def mock_db():
-    test_app = create_test_app(db_uri="sqlite:///../test.db")
-    with test_app.app_context():
-        db.init_app(test_app)
-
-        yield db
-
-
-mock_username = "{0}_{1}".format(test_username_prefix, uuid4())
+mock_username = uuid4()
 mock_password = "password"
 
 
