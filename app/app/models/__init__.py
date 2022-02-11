@@ -15,15 +15,18 @@ class Post(db.Model):
     __tablename__ = "posts"
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(32))
+    comments = db.relationship("Comment", backref="post", lazy=True)
 
     def as_dict(self):
         return {"id": self.id, "body": self.body}
 
 
 class User(db.Model):
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32))
     hashed_password = db.Column(db.String(60))
+    comments = db.relationship("Comment", backref="user", lazy=True)
 
     def as_dict(self):
         return {
@@ -68,3 +71,14 @@ class User(db.Model):
             total_deleted += 1
 
         return total_deleted
+
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(32))
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    def as_dict(self):
+        return {"id": self.id, "body": self.body}
