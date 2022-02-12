@@ -9,8 +9,10 @@ mock_create_post_body = {"body": "Hello, world!"}
 mock_post_id = 1
 
 
-def test_get_post(mock_client):
-    with patch("blueprints.posts.find_post_by_id") as mock_find_post_by_id:
+def test_get_post_happy_path(mock_client):
+    with patch(
+        "blueprints.posts.Post.find_post_by_id"
+    ) as mock_find_post_by_id:
         mock_post = Post()
         mock_post.id = mock_post_id
         mock_find_post_by_id.return_value = mock_post
@@ -22,9 +24,19 @@ def test_get_post(mock_client):
         assert response_body["id"] == mock_post_id
 
 
+def test_get_post_not_found(mock_client):
+    with patch(
+        "blueprints.posts.Post.find_post_by_id"
+    ) as mock_find_post_by_id:
+        mock_find_post_by_id.return_value = None
+
+        response = mock_client.get("/post/{0}".format(mock_post_id))
+        assert response.status_code == codes.not_found
+
+
 def test_delete_post(mock_client):
     with patch(
-        "blueprints.posts.find_post_by_id"
+        "blueprints.posts.Post.find_post_by_id"
     ) as mock_find_post_by_id, patch(
         "blueprints.posts.db.session.delete"
     ) as mock_delete, patch(
@@ -65,7 +77,7 @@ def test_create_post(mock_client):
 
 def test_update_post(mock_client):
     with patch(
-        "blueprints.posts.find_post_by_id"
+        "blueprints.posts.Post.find_post_by_id"
     ) as mock_find_post_by_id, patch(
         "blueprints.posts.db.session.add"
     ) as mock_add, patch(

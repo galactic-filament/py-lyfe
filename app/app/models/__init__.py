@@ -21,6 +21,10 @@ class Post(db.Model):
     def as_dict(self):
         return {"id": self.id, "body": self.body}
 
+    @classmethod
+    def find_post_by_id(cls, post_id):
+        return Post.query.filter_by(id=post_id).first()
+
 
 class User(db.Model):
     __tablename__ = "users"
