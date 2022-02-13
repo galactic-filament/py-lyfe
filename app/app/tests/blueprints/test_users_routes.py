@@ -14,13 +14,12 @@ mock_user_id = 1
 def test_create_user(mock_client):
     with patch("blueprints.users.db.session.add") as mock_add, patch(
         "blueprints.users.db.session.commit"
-    ) as mock_commit:
+    ):
 
         def mock_add_side_effect(user):
             user.id = mock_user_id
 
         mock_add.side_effect = mock_add_side_effect
-        mock_commit.return_value = None
 
         response = mock_client.post(
             "/users",
@@ -45,7 +44,7 @@ def test_get_user_unauthorized(mock_client):
 def test_get_user_authorized(mock_client):
     with patch("blueprints.users.db.session.add") as mock_add, patch(
         "blueprints.users.db.session.commit"
-    ) as mock_commit, patch(
+    ), patch(
         "blueprints.users.User.find_user_by_username"
     ) as mock_find_user_by_username:
 
@@ -53,7 +52,6 @@ def test_get_user_authorized(mock_client):
             user.id = mock_user_id
 
         mock_add.side_effect = mock_add_side_effect
-        mock_commit.return_value = None
 
         response = mock_client.post(
             "/users",
