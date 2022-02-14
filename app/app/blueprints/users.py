@@ -26,4 +26,12 @@ def create_user():
 @users_blueprint.route("/user", methods=["GET"])
 @jwt_required()
 def get_user():
-    return jsonify({"user": current_user.as_dict()}), codes.found
+    return (
+        jsonify(
+            {
+                "user": current_user.as_dict(),
+                "comments": [x.as_dict() for x in current_user.comments()],
+            }
+        ),
+        codes.found,
+    )
