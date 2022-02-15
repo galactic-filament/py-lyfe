@@ -30,7 +30,7 @@ def get_user():
         jsonify(
             {
                 "user": current_user.as_dict(),
-                "comments": [x.as_dict() for x in current_user.comments()],
+                "comments": [x.as_dict() for x in current_user.comments],
             }
         ),
         codes.found,
