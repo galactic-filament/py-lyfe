@@ -23,6 +23,22 @@ def create_user():
     )
 
 
+@users_blueprint.route("/login", methods=["POST"])
+def login():
+    user = User.find_user_matching_password(
+        request.json["username"], request.json["password"]
+    )
+    if user is None:
+        return jsonify({}), codes.unauthorized
+
+    access_token = create_access_token(identity=user)
+
+    return (
+        jsonify({"user": user.as_dict(), "access_token": access_token}),
+        codes.ok,
+    )
+
+
 @users_blueprint.route("/user", methods=["GET"])
 @jwt_required()
 def get_user():

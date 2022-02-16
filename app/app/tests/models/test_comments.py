@@ -23,3 +23,7 @@ def test_create_comment_happy_path(mock_db):
     mock_db.session.add(post)
 
     mock_db.session.commit()
+
+    user = User.find_user_by_username(mock_username)
+    assert user is not None
+    assert len(user.comments) == 1
