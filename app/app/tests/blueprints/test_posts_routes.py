@@ -1,5 +1,6 @@
 import json
 from unittest.mock import patch
+import pytest
 
 from requests import codes
 
@@ -9,86 +10,70 @@ mock_create_post_body = {"body": "Hello, world!"}
 mock_post_id = 1
 
 
-def test_get_post_happy_path(mock_client):
+@pytest.fixture()
+def mock_find_post_by_id():
+    mock_post = Post()
+    mock_post.id = mock_post_id
+
     with patch(
-        "blueprints.posts.Post.find_post_by_id"
-    ) as mock_find_post_by_id:
-        mock_post = Post()
-        mock_post.id = mock_post_id
-        mock_find_post_by_id.return_value = mock_post
+        "blueprints.posts.Post.find_post_by_id", return_value=mock_post
+    ):
+        yield
 
-        response = mock_client.get("/post/{0}".format(mock_post_id))
-        assert response.status_code == codes.ok
 
-        response_body = json.loads(response.get_data(as_text=True))
-        assert response_body["id"] == mock_post_id
+@pytest.fixture()
+def mock_set_post_id():
+    def mock_set_post_id(post):
+        post.id = mock_post_id
+
+    with patch(
+        "blueprints.posts.db.session.add", side_effect=mock_set_post_id
+    ), patch("blueprints.posts.db.session.commit"):
+
+        yield
+
+
+def test_get_post_happy_path(mock_client, mock_find_post_by_id):
+    response = mock_client.get("/post/{0}".format(mock_post_id))
+    assert response.status_code == codes.ok
+
+    response_body = json.loads(response.get_data(as_text=True))
+    assert response_body["id"] == mock_post_id
 
 
 def test_get_post_not_found(mock_client):
-    with patch(
-        "blueprints.posts.Post.find_post_by_id"
-    ) as mock_find_post_by_id:
-        mock_find_post_by_id.return_value = None
-
+    with patch("blueprints.posts.Post.find_post_by_id", return_value=None):
         response = mock_client.get("/post/{0}".format(mock_post_id))
         assert response.status_code == codes.not_found
 
 
-def test_delete_post(mock_client):
-    with patch(
-        "blueprints.posts.Post.find_post_by_id"
-    ) as mock_find_post_by_id, patch(
-        "blueprints.posts.db.session.delete"
-    ), patch(
+def test_delete_post(mock_client, mock_find_post_by_id):
+    with patch("blueprints.posts.db.session.delete"), patch(
         "blueprints.posts.db.session.commit"
     ):
-        mock_post = Post()
-        mock_post.id = mock_post_id
-        mock_find_post_by_id.return_value = mock_post
-
         response = mock_client.delete("/post/{0}".format(mock_post_id))
         assert response.status_code == codes.ok
 
 
-def test_create_post(mock_client):
-    with patch("blueprints.posts.db.session.add") as mock_add, patch(
-        "blueprints.posts.db.session.commit"
-    ):
+def test_create_post(mock_client, mock_set_post_id):
+    response = mock_client.post(
+        "/posts",
+        data=json.dumps(mock_create_post_body),
+        content_type="application/json",
+    )
+    assert response.status_code == codes.created
 
-        def mock_add_side_effect(post):
-            post.id = mock_post_id
-
-        mock_add.side_effect = mock_add_side_effect
-
-        response = mock_client.post(
-            "/posts",
-            data=json.dumps(mock_create_post_body),
-            content_type="application/json",
-        )
-        assert response.status_code == codes.created
-
-        response_body = json.loads(response.get_data(as_text=True))
-        assert response_body["id"] == mock_post_id
+    response_body = json.loads(response.get_data(as_text=True))
+    assert response_body["id"] == mock_post_id
 
 
-def test_update_post(mock_client):
-    with patch(
-        "blueprints.posts.Post.find_post_by_id"
-    ) as mock_find_post_by_id, patch("blueprints.posts.db.session.add"), patch(
-        "blueprints.posts.db.session.commit"
-    ):
-        mock_post = Post()
-        mock_post.id = mock_post_id
-        assert mock_post.as_dict()["body"] is None
+def test_update_post(mock_client, mock_find_post_by_id, mock_set_post_id):
+    response = mock_client.put(
+        "/post/{0}".format(mock_post_id),
+        data=json.dumps(mock_create_post_body),
+        content_type="application/json",
+    )
+    assert response.status_code == codes.ok
 
-        mock_find_post_by_id.return_value = mock_post
-
-        response = mock_client.put(
-            "/post/{0}".format(mock_post_id),
-            data=json.dumps(mock_create_post_body),
-            content_type="application/json",
-        )
-        assert response.status_code == codes.ok
-
-        response_body = json.loads(response.get_data(as_text=True))
-        assert response_body["body"] == mock_create_post_body["body"]
+    response_body = json.loads(response.get_data(as_text=True))
+    assert response_body["body"] == mock_create_post_body["body"]
