@@ -1,5 +1,6 @@
 import os
 import traceback
+from uuid import uuid4
 
 import pytest
 from flask import Flask
@@ -7,6 +8,7 @@ from werkzeug.exceptions import HTTPException
 
 import blueprints
 import models
+from models import User
 
 
 @pytest.fixture(scope="session")
@@ -26,7 +28,7 @@ def mock_app():
         if isinstance(e, HTTPException):
             return e
 
-    return app
+    yield app
 
 
 @pytest.fixture(scope="session")
@@ -35,7 +37,7 @@ def mock_client(mock_app):
         models.init_app(mock_app, "")
         blueprints.register_blueprints(mock_app, "settings.JWT_SECRET")
 
-        return mock_app.test_client()
+        yield mock_app.test_client()
 
 
 @pytest.fixture(scope="session")
@@ -48,3 +50,23 @@ def mock_db(mock_app):
         )
 
         yield models.db
+
+
+mock_username = "username"
+mock_password = "password"
+mock_user_id = 1
+
+
+@pytest.fixture()
+def mock_user():
+    user = User()
+    user.id = mock_user_id
+    user.username = mock_username
+    user.set_password(mock_password)
+
+    yield user
+
+
+@pytest.fixture()
+def mock_unique_user_id():
+    yield str(uuid4())

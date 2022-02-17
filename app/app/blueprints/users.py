@@ -51,3 +51,16 @@ def get_user():
         ),
         codes.found,
     )
+
+
+@users_blueprint.route("/user/comments", methods=["GET"])
+@jwt_required()
+def get_user_comments():
+    return (
+        jsonify(
+            {
+                "comments": [x.as_dict() for x in current_user.comments],
+            }
+        ),
+        codes.found,
+    )
