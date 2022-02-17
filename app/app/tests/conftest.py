@@ -54,6 +54,10 @@ def mock_db(mock_app):
 
 mock_username = "username"
 mock_password = "password"
+mock_login_request_body = {
+    "username": mock_username,
+    "password": mock_password,
+}
 mock_user_id = 1
 
 
