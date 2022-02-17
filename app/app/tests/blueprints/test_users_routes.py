@@ -5,6 +5,7 @@ import bcrypt
 import pytest
 from requests import codes
 
+from models import User, Comment
 from tests.conftest import mock_username, mock_password, mock_user_id
 
 mock_create_user_body = {"username": mock_username, "password": mock_password}
@@ -23,8 +24,8 @@ def mock_find_user_matching_password(mock_user):
 def mock_find_user_by_username(mock_user):
     with patch(
         "blueprints.users.User.find_user_by_username", return_value=mock_user
-    ):
-        yield
+    ) as patch_find_user_by_username:
+        yield patch_find_user_by_username
 
 
 @pytest.fixture()
@@ -98,3 +99,30 @@ def test_login_happy_path(
         },
     )
     assert response.status_code == codes.found
+
+
+def test_user_comments(
+    mock_client, mock_find_user_matching_password, mock_find_user_by_username
+):
+    response = mock_client.post(
+        "/login",
+        data=json.dumps(mock_create_user_body),
+        content_type="application/json",
+    )
+    assert response.status_code == codes.ok
+    response_body = json.loads(response.get_data(as_text=True))
+
+    user = User()
+    user.comments.append(Comment())
+    mock_find_user_by_username.return_value = user
+
+    response = mock_client.get(
+        "/user/comments",
+        headers={
+            "Authorization": "Bearer {0}".format(response_body["access_token"])
+        },
+    )
+    assert response.status_code == codes.ok
+
+    response_body = json.loads(response.get_data(as_text=True))
+    assert len(response_body["comments"]) == 1

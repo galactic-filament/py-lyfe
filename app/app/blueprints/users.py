@@ -57,10 +57,6 @@ def get_user():
 @jwt_required()
 def get_user_comments():
     return (
-        jsonify(
-            {
-                "comments": [x.as_dict() for x in current_user.comments],
-            }
-        ),
-        codes.found,
+        jsonify({"comments": [x.as_dict() for x in current_user.comments]}),
+        codes.ok,
     )
