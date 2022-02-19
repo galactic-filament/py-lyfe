@@ -4,10 +4,11 @@ from unittest.mock import patch
 import pytest
 from requests import codes
 
-from tests.conftest import mock_login_request_body
+from tests.conftest import mock_login_request_body, mock_user_id
 from models import User, Comment
 
 mock_create_comment_request_body = {"body": "Hello, world!"}
+mock_update_comment_request_body = {"body": "Jello, world!"}
 mock_comment_id = 1
 
 
@@ -34,10 +35,27 @@ def mock_set_comment_id():
         comment.id = mock_comment_id
 
     with patch(
-        "blueprints.users.db.session.add", side_effect=mock_set_comment_id
-    ), patch("blueprints.users.db.session.commit"):
+        "blueprints.comments.db.session.add", side_effect=mock_set_comment_id
+    ), patch("blueprints.comments.db.session.commit"):
 
         yield
+
+
+@pytest.fixture()
+def mock_delete_comment():
+    with patch("blueprints.comments.db.session.remove"), patch(
+        "blueprints.comments.db.session.commit"
+    ):
+
+        yield
+
+
+@pytest.fixture()
+def mock_find_comment_by_id():
+    with patch(
+        "blueprints.comments.Comment.find_comment_by_id",
+    ) as patch_find_comment_by_id:
+        yield patch_find_comment_by_id
 
 
 def test_create_comment(
@@ -72,7 +90,147 @@ def test_create_comment(
     )
     assert response.status_code == codes.created
 
-    mock_create_comment_request_body.update({"id": None})
+    mock_create_comment_request_body.update(dict(id=None))
 
     response_body = json.loads(response.get_data(as_text=True))
     assert response_body["comments"][0] == mock_create_comment_request_body
+
+
+def test_get_comments(
+    mock_client,
+    mock_find_user_matching_password,
+    mock_find_user_by_username,
+):
+    response = mock_client.post(
+        "/login",
+        data=json.dumps(mock_login_request_body),
+        content_type="application/json",
+    )
+    assert response.status_code == codes.ok
+    response_body = json.loads(response.get_data(as_text=True))
+
+    user = User()
+    comment = Comment()
+    comment.user = user
+    comment.id = None
+    comment.body = mock_create_comment_request_body["body"]
+    user.comments.append(comment)
+    mock_find_user_by_username.return_value = user
+
+    response = mock_client.get(
+        "/comments",
+        data=json.dumps(mock_create_comment_request_body),
+        content_type="application/json",
+        headers={
+            "Authorization": "Bearer {0}".format(response_body["access_token"])
+        },
+    )
+    assert response.status_code == codes.ok
+
+    mock_create_comment_request_body.update(dict(id=None))
+
+    response_body = json.loads(response.get_data(as_text=True))
+    assert response_body["comments"][0] == mock_create_comment_request_body
+
+
+def test_update_comment_happypath(
+    mock_client,
+    mock_find_user_matching_password,
+    mock_find_user_by_username,
+    mock_find_comment_by_id,
+    mock_set_comment_id,
+):
+    response = mock_client.post(
+        "/login",
+        data=json.dumps(mock_login_request_body),
+        content_type="application/json",
+    )
+    assert response.status_code == codes.ok
+    response_body = json.loads(response.get_data(as_text=True))
+
+    user = User()
+    user.id = mock_user_id
+    mock_find_user_by_username.return_value = user
+
+    comment = Comment()
+    comment.id = mock_comment_id
+    comment.user_id = mock_user_id
+    mock_find_comment_by_id.return_value = comment
+
+    response = mock_client.put(
+        "/comment/{0}".format(mock_comment_id),
+        data=json.dumps(mock_update_comment_request_body),
+        content_type="application/json",
+        headers={
+            "Authorization": "Bearer {0}".format(response_body["access_token"])
+        },
+    )
+    assert response.status_code == codes.ok
+
+
+def test_remove_comment_happypath(
+    mock_client,
+    mock_find_user_matching_password,
+    mock_find_user_by_username,
+    mock_find_comment_by_id,
+    mock_delete_comment,
+):
+    response = mock_client.post(
+        "/login",
+        data=json.dumps(mock_login_request_body),
+        content_type="application/json",
+    )
+    assert response.status_code == codes.ok
+    response_body = json.loads(response.get_data(as_text=True))
+
+    user = User()
+    user.id = mock_user_id
+    mock_find_user_by_username.return_value = user
+
+    comment = Comment()
+    comment.id = mock_comment_id
+    comment.user_id = mock_user_id
+    mock_find_comment_by_id.return_value = comment
+
+    response = mock_client.delete(
+        "/comment/{0}".format(mock_comment_id),
+        content_type="application/json",
+        headers={
+            "Authorization": "Bearer {0}".format(response_body["access_token"])
+        },
+    )
+    assert response.status_code == codes.ok
+
+
+def test_remove_comment_unauth(
+    mock_client,
+    mock_find_user_matching_password,
+    mock_find_user_by_username,
+    mock_find_comment_by_id,
+    mock_delete_comment,
+):
+    response = mock_client.post(
+        "/login",
+        data=json.dumps(mock_login_request_body),
+        content_type="application/json",
+    )
+    assert response.status_code == codes.ok
+    response_body = json.loads(response.get_data(as_text=True))
+
+    user = User()
+    user.id = mock_user_id
+    mock_find_user_by_username.return_value = user
+
+    comment = Comment()
+    comment.id = mock_comment_id
+    comment.user_id = -1
+    mock_find_comment_by_id.return_value = comment
+
+    response = mock_client.delete(
+        "/comment/{0}".format(mock_comment_id),
+        content_type="application/json",
+        headers={
+            "Authorization": "Bearer {0}".format(response_body["access_token"])
+        },
+    )
+    assert response.status_code == codes.unauthorized

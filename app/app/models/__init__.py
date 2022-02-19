@@ -93,5 +93,5 @@ class Comment(db.Model):
         return {"id": self.id, "body": self.body}
 
     @classmethod
-    def find_by_id(cls, comment_id):
+    def find_comment_by_id(cls, comment_id):
         return Comment.query.filter_by(id=comment_id).first()

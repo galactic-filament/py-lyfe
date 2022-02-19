@@ -27,14 +27,14 @@ def create_comment():
 def get_comments():
     return (
         jsonify({"comments": [x.as_dict() for x in current_user.comments]}),
-        codes.created,
+        codes.ok,
     )
 
 
 @comments_blueprint.route("/comment/<int:comment_id>", methods=["PUT"])
 @jwt_required()
 def update_comment(comment_id):
-    comment = Comment.find_by_id(comment_id)
+    comment = Comment.find_comment_by_id(comment_id)
     if comment is None:
         return jsonify({}), codes.not_found
 
@@ -51,7 +51,7 @@ def update_comment(comment_id):
 @comments_blueprint.route("/comment/<int:comment_id>", methods=["DELETE"])
 @jwt_required()
 def delete_comment(comment_id):
-    comment = Comment.find_by_id(comment_id)
+    comment = Comment.find_comment_by_id(comment_id)
     if comment is None:
         return jsonify({}), codes.not_found
 
