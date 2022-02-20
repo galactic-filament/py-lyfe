@@ -5,7 +5,7 @@ import bcrypt
 import pytest
 from requests import codes
 
-from models import User, Comment
+from models import User, Comment, Role
 from tests.conftest import mock_username, mock_password, mock_user_id
 
 mock_create_user_body = {"username": mock_username, "password": mock_password}
@@ -109,6 +109,52 @@ def test_login_invalid(mock_client, mock_find_user_matching_password):
         content_type="application/json",
     )
     assert response.status_code == codes.bad_request
+
+
+def test_login_admin_happy_path(
+    mock_client, mock_find_user_matching_password, mock_find_user_by_username
+):
+    response = mock_client.post(
+        "/login",
+        data=json.dumps(mock_create_user_body),
+        content_type="application/json",
+    )
+    assert response.status_code == codes.ok
+    response_body = json.loads(response.get_data(as_text=True))
+
+    user = User()
+    role = Role()
+    role.name = "admin"
+    user.user_roles.append(role)
+    mock_find_user_by_username.return_value = user
+
+    response = mock_client.get(
+        "/user/admin",
+        headers={
+            "Authorization": "Bearer {0}".format(response_body["access_token"])
+        },
+    )
+    assert response.status_code == codes.ok
+
+
+def test_login_admin_unauth(
+    mock_client, mock_find_user_matching_password, mock_find_user_by_username
+):
+    response = mock_client.post(
+        "/login",
+        data=json.dumps(mock_create_user_body),
+        content_type="application/json",
+    )
+    assert response.status_code == codes.ok
+    response_body = json.loads(response.get_data(as_text=True))
+
+    response = mock_client.get(
+        "/user/admin",
+        headers={
+            "Authorization": "Bearer {0}".format(response_body["access_token"])
+        },
+    )
+    assert response.status_code == codes.unauthorized
 
 
 def test_user_comments(
