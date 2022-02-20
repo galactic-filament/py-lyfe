@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, create_access_token, current_user
 from requests import codes
 
+from blueprints.decorators import role_required
 from models import db, User
 
 users_blueprint = Blueprint("users", __name__)
@@ -29,7 +30,7 @@ def login():
         request.json["username"], request.json["password"]
     )
     if user is None:
-        return jsonify({}), codes.unauthorized
+        return jsonify({}), codes.bad_request
 
     access_token = create_access_token(identity=user)
 
@@ -51,6 +52,13 @@ def get_user():
         ),
         codes.found,
     )
+
+
+@users_blueprint.route("/user/admin", methods=["GET"])
+@role_required("admin")
+@jwt_required()
+def get_admin_info():
+    return jsonify({}), codes.ok
 
 
 @users_blueprint.route("/user/comments", methods=["GET"])
