@@ -26,6 +26,17 @@ class Post(db.Model):
         return Post.query.filter_by(id=post_id).first()
 
 
+user_roles = db.Table(
+    "user_roles",
+    db.Column(
+        "user_id", db.Integer, db.ForeignKey("users.id"), primary_key=True
+    ),
+    db.Column(
+        "role_id", db.Integer, db.ForeignKey("roles.id"), primary_key=True
+    ),
+)
+
+
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -33,6 +44,12 @@ class User(db.Model):
     hashed_password = db.Column(db.String(60))
 
     comments = db.relationship("Comment", back_populates="user")
+    user_roles = db.relationship(
+        "Role",
+        secondary=user_roles,
+        lazy="subquery",
+        backref=db.backref("users", lazy=True),
+    )
 
     def as_dict(self):
         return {
@@ -77,6 +94,12 @@ class User(db.Model):
             total_deleted += 1
 
         return total_deleted
+
+
+class Role(db.Model):
+    __tablename__ = "roles"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32), nullable=False)
 
 
 class Comment(db.Model):
