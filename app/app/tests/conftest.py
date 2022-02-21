@@ -7,6 +7,7 @@ from flask import Flask
 from werkzeug.exceptions import HTTPException
 
 import blueprints
+import forms
 import models
 from models import User
 
@@ -35,7 +36,8 @@ def mock_app():
 def mock_client(mock_app):
     with mock_app.app_context():
         models.init_app(mock_app, "")
-        blueprints.register_blueprints(mock_app, "settings.JWT_SECRET")
+        blueprints.register_blueprints(mock_app, "SECRET")
+        forms.init_app(mock_app, "SECRET")
 
         yield mock_app.test_client()
 

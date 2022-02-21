@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, create_access_token, current_user
 from requests import codes
 
 from blueprints.decorators import role_required
+from forms import csrf
 from models import db, User
 
 users_blueprint = Blueprint("users", __name__)
@@ -25,6 +26,7 @@ def create_user():
 
 
 @users_blueprint.route("/login", methods=["POST"])
+@csrf.exempt
 def login():
     user = User.find_user_matching_password(
         request.json["username"], request.json["password"]
