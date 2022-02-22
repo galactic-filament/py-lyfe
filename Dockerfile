@@ -1,8 +1,4 @@
-FROM python:3.7-alpine
-
-# app port
-EXPOSE 80
-ENV APP_PORT 80
+FROM python:3.7-alpine as build-env
 
 # alpine deps install
 RUN apk add --virtual native-deps \
@@ -22,3 +18,14 @@ ENV PATH $APP_DIR/.venv/bin:$PATH
 
 # alpine deps cleanup
 RUN apk del native-deps
+
+
+FROM python:3.7-alpine as runtime-env
+
+# app port
+EXPOSE 80
+ENV APP_PORT 80
+
+# importing from build-env
+COPY --from=build-env /srv/app /srv/app
+WORKDIR /srv/app
