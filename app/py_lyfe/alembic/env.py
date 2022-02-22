@@ -7,7 +7,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from models import db
+from py_lyfe.models import db
 
 cmd_kwargs = context.get_x_argument(as_dictionary=True)
 if "db" not in cmd_kwargs:

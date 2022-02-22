@@ -1,4 +1,4 @@
 #!/bin/bash
 
 python ./app/validate-environment.py \
-  && python ./app/run.py
+  && python -m py_lyfe

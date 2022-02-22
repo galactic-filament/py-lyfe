@@ -1,7 +1,7 @@
 """re-add models
 
 Revision ID: 8ec97ada4afa
-Revises: 
+Revises:
 Create Date: 2022-02-11 15:47:05.364078
 
 """

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-flake8 ./app --max-complexity 10
+flake8 ./py_lyfe --max-complexity 15 --ignore E722
