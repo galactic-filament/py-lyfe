@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, current_user
 from requests import codes
 
-from models import db, Comment
+from py_lyfe.models import Comment, db
 
 comments_blueprint = Blueprint("comments", __name__)
 

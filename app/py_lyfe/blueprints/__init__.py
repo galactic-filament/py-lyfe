@@ -1,10 +1,10 @@
 from flask_jwt_extended import JWTManager
 
-from blueprints.comments import comments_blueprint
-from blueprints.default import default_blueprint
-from blueprints.posts import posts_blueprint
-from blueprints.users import users_blueprint
-from models import User
+from py_lyfe.blueprints.comments import comments_blueprint
+from py_lyfe.blueprints.default import default_blueprint
+from py_lyfe.blueprints.posts import posts_blueprint
+from py_lyfe.blueprints.users import users_blueprint
+from py_lyfe.models import User
 
 
 def register_blueprints(app, jwt_secret_key):

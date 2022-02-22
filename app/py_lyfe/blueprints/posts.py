@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from requests import codes
 
-from models import db, Post
+from py_lyfe.models import Post, db
 
 posts_blueprint = Blueprint("posts", __name__)
 

@@ -8,7 +8,7 @@ from werkzeug.exceptions import HTTPException
 
 import blueprints
 import models
-from models import User
+from py_lyfe.models import User
 
 
 @pytest.fixture(scope="session")

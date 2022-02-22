@@ -1,5 +1,5 @@
 [run]
 omit =
-    app.py
-    run.py
+    __main__.py
+    settings.py
     validate-environment.py

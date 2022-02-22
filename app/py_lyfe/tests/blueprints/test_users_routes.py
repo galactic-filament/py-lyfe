@@ -5,8 +5,8 @@ import bcrypt
 import pytest
 from requests import codes
 
-from models import User, Comment, Role
-from tests.conftest import mock_username, mock_password, mock_user_id
+from py_lyfe.models import User, Comment, Role
+from py_lyfe.tests.conftest import mock_username, mock_password, mock_user_id
 
 mock_create_user_body = {"username": mock_username, "password": mock_password}
 

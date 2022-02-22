@@ -1,7 +1,7 @@
 from uuid import uuid4
 
-from tests.conftest import mock_password
-from models import User
+from py_lyfe.tests.conftest import mock_password
+from py_lyfe.models import User
 
 
 def test_find_user_not_found(mock_db):

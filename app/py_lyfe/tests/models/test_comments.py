@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from models import User, Comment, Post
+from py_lyfe.models import Comment, User, Post
 
 mock_username = str(uuid4())
 mock_password = "password"

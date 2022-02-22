@@ -4,7 +4,7 @@ import pytest
 
 from requests import codes
 
-from models import Post
+from py_lyfe.models import Post
 
 mock_create_post_body = {"body": "Hello, world!"}
 mock_post_id = 1

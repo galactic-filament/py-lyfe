@@ -2,8 +2,8 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, create_access_token, current_user
 from requests import codes
 
-from blueprints.decorators import role_required
-from models import db, User
+from py_lyfe.blueprints.decorators import role_required
+from py_lyfe.models import User, db
 
 users_blueprint = Blueprint("users", __name__)
 

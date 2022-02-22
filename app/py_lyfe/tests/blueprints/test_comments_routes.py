@@ -4,8 +4,8 @@ from unittest.mock import patch
 import pytest
 from requests import codes
 
-from tests.conftest import mock_login_request_body, mock_user_id
-from models import User, Comment
+from py_lyfe.tests.conftest import mock_login_request_body, mock_user_id
+from py_lyfe.models import User, Comment
 
 mock_create_comment_request_body = {"body": "Hello, world!"}
 mock_update_comment_request_body = {"body": "Jello, world!"}
