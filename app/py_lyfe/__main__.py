@@ -5,11 +5,10 @@ from logging import FileHandler
 from flask import Flask, request
 from pythonjsonlogger import jsonlogger
 
-import blueprints
-import models
-import settings
+from py_lyfe import blueprints, models, settings
 
 app = Flask(__name__)
+
 
 # misc init
 models.init_app(app, settings.DATABASE_URI)
