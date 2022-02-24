@@ -29,3 +29,5 @@ ENV APP_PORT 80
 # importing from build-env
 COPY --from=build-env /srv/app /srv/app
 WORKDIR /srv/app
+
+CMD ["./bin/run-app.sh"]

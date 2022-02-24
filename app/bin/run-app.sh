@@ -1,4 +1,5 @@
-#!/bin/bash
+#! /bin/sh
 
-python ./app/validate-environment.py \
+source .venv/bin/activate \
+  && python ./py_lyfe/validate-environment.py \
   && python -m py_lyfe

@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/sh
 
 coverage run -m pytest \
   && coverage html
