@@ -8,7 +8,7 @@ docker run \
   --rm \
   --network py-lyfe \
   -e DATABASE_HOST="$DATABASE_HOST" \
-  -e DATABASE_URI="postgresql://postgres@$DATABASE_HOST:5432/postgres" \
+  -e DATABASE_URI="postgresql://postgres:password@$DATABASE_HOST:5432/postgres" \
   -e APP_LOG_DIR=/tmp \
   -e APP_PORT=80 \
   -e JWT_SECRET='JWT_SECRET' \
