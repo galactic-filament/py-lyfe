@@ -1,11 +1,11 @@
 import logging
-from logging.config import fileConfig
+import os
 import re
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from logging.config import fileConfig
 
 from alembic import context
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
 
 from py_lyfe.models import db
 
@@ -107,11 +107,18 @@ def run_migrations_online():
         if name != db_name:
             continue
 
+        section = context.config.get_section(name)
+        section["sqlalchemy.url"] = (
+            section["sqlalchemy.url"].replace(
+                "0.0.0.0", os.environ.get("DATABASE_HOST")
+            )
+            if name == "dev"
+            else section["sqlalchemy.url"]
+        )
+
         engines[name] = rec = {}
         rec["engine"] = engine_from_config(
-            context.config.get_section(name),
-            prefix="sqlalchemy.",
-            poolclass=pool.NullPool,
+            section, prefix="sqlalchemy.", poolclass=pool.NullPool
         )
 
     for name, rec in engines.items():
