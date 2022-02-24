@@ -13,6 +13,7 @@ Flask-SQLAlchemy = "^2.5.1"
 python-json-logger = "^2.0.2"
 Flask-JWT-Extended = "^4.3.1"
 WTForms = "^3.0.1"
+psycopg2 = "^2.9.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
