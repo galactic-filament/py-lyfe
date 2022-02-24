@@ -6,8 +6,15 @@ from py_lyfe.models import Post, db
 posts_blueprint = Blueprint("posts", __name__)
 
 
+@posts_blueprint.route("/posts", methods=["GET"])
+def get_posts():
+    posts = [x.as_dict() for x in Post.find_all()]
+
+    return jsonify({"posts": posts}), codes.ok
+
+
 @posts_blueprint.route("/posts", methods=["POST"])
-def posts():
+def create_post():
     post = Post()
     post.body = request.json["body"]
     db.session.add(post)

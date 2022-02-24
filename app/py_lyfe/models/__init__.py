@@ -16,7 +16,9 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(32))
 
-    comments = db.relationship("Comment", back_populates="post")
+    comments = db.relationship(
+        "Comment", back_populates="post", cascade="delete"
+    )
 
     def as_dict(self):
         return {"id": self.id, "body": self.body}
@@ -24,6 +26,10 @@ class Post(db.Model):
     @classmethod
     def find_post_by_id(cls, post_id):
         return Post.query.filter_by(id=post_id).first()
+
+    @classmethod
+    def find_all(cls):
+        return Post.query.all()
 
 
 user_roles = db.Table(

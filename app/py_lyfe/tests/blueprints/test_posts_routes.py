@@ -22,6 +22,15 @@ def mock_find_post_by_id():
 
 
 @pytest.fixture()
+def mock_find_all():
+    mock_post = Post()
+    mock_post.id = mock_post_id
+
+    with patch("blueprints.posts.Post.find_all", return_value=[mock_post]):
+        yield
+
+
+@pytest.fixture()
 def mock_set_post_id():
     def mock_set_post_id(post):
         post.id = mock_post_id
@@ -65,6 +74,11 @@ def test_create_post(mock_client, mock_set_post_id):
 
     response_body = json.loads(response.get_data(as_text=True))
     assert response_body["id"] == mock_post_id
+
+
+def test_get_posts(mock_client, mock_find_all):
+    response = mock_client.get("/posts", content_type="application/json")
+    assert response.status_code == codes.ok
 
 
 def test_update_post(mock_client, mock_find_post_by_id, mock_set_post_id):
