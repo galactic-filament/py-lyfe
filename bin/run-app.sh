@@ -12,4 +12,5 @@ docker run \
   -e APP_LOG_DIR=/tmp \
   -e APP_PORT=80 \
   -e JWT_SECRET='JWT_SECRET' \
+  --name py-lyfe-app \
   galactic-filament/py-lyfe
