@@ -2,7 +2,7 @@ FROM python:3.7-alpine as build-env
 
 # alpine deps install
 RUN apk add --virtual native-deps \
-  curl gcc g++ libffi-dev
+  curl gcc g++ libffi-dev postgresql-dev
 
 # add app dir
 ENV APP_DIR /srv/app
@@ -21,6 +21,10 @@ RUN apk del native-deps
 
 
 FROM python:3.7-alpine as runtime-env
+
+# alpine deps install
+RUN apk add --virtual native-deps \
+  postgresql-dev
 
 # app port
 EXPOSE 80
