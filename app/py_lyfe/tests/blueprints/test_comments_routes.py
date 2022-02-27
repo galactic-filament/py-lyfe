@@ -94,7 +94,7 @@ def test_create_comment(
     mock_create_comment_request_body.update(dict(id=None))
 
     response_body = json.loads(response.get_data(as_text=True))
-    assert response_body["comments"][0] == mock_create_comment_request_body
+    assert response_body == mock_create_comment_request_body
 
 
 def test_get_comments(

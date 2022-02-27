@@ -18,7 +18,7 @@ def create_comment():
     db.session.commit()
 
     return (
-        jsonify({"comments": [x.as_dict() for x in current_user.comments]}),
+        jsonify(comment.as_dict()),
         codes.created,
     )
 
@@ -46,7 +46,7 @@ def update_comment(comment_id):
     db.session.add(comment)
     db.session.commit()
 
-    return jsonify({"comment": comment.as_dict()}), codes.ok
+    return jsonify(comment.as_dict()), codes.ok
 
 
 @comments_blueprint.route("/comment/<int:comment_id>", methods=["DELETE"])
