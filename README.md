@@ -33,5 +33,6 @@
 - [x] Routes protected via ACLs
 - [ ] [~~Forms protected by CSRF~~](https://flask-wtf.readthedocs.io/en/1.0.x/) (Not necessary due to using JWT)
 - [ ] ~~Form validation~~ (Will do at a later date)
+- [ ] Postman collection verified
 - [x] Optimized Docker image
 - [x] Validates environment (env vars, database host and port are accessible)
