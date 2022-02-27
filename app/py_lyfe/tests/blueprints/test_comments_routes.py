@@ -43,7 +43,7 @@ def mock_set_comment_id():
 
 @pytest.fixture()
 def mock_delete_comment():
-    with patch("blueprints.comments.db.session.remove"), patch(
+    with patch("blueprints.comments.db.session.delete"), patch(
         "blueprints.comments.db.session.commit"
     ):
 

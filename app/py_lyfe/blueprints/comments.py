@@ -59,7 +59,7 @@ def delete_comment(comment_id):
     if comment.user_id != current_user.id:
         return jsonify({}), codes.unauthorized
 
-    db.session.remove(comment)
+    db.session.delete(comment)
     db.session.commit()
 
     return jsonify({}), codes.ok
