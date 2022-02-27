@@ -7,7 +7,7 @@ from requests import codes
 from py_lyfe.tests.conftest import mock_login_request_body, mock_user_id
 from py_lyfe.models import User, Comment
 
-mock_create_comment_request_body = {"body": "Hello, world!"}
+mock_create_comment_request_body = {"body": "Hello, world!", "post_id": 0}
 mock_update_comment_request_body = {"body": "Jello, world!"}
 mock_comment_id = 1
 
@@ -77,6 +77,7 @@ def test_create_comment(
     comment.user = user
     comment.id = None
     comment.body = mock_create_comment_request_body["body"]
+    comment.post_id = mock_create_comment_request_body["post_id"]
     user.comments.append(comment)
     mock_find_user_by_username.return_value = user
 
@@ -114,6 +115,7 @@ def test_get_comments(
     comment.user = user
     comment.id = None
     comment.body = mock_create_comment_request_body["body"]
+    comment.post_id = mock_create_comment_request_body["post_id"]
     user.comments.append(comment)
     mock_find_user_by_username.return_value = user
 

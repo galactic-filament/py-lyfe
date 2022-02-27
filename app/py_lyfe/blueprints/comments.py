@@ -12,6 +12,7 @@ comments_blueprint = Blueprint("comments", __name__)
 def create_comment():
     comment = Comment()
     comment.body = request.json["body"]
+    comment.post_id = request.json["post_id"]
     current_user.comments.append(comment)
     db.session.add(current_user)
     db.session.commit()

@@ -119,7 +119,7 @@ class Comment(db.Model):
     post = db.relationship("Post", back_populates="comments")
 
     def as_dict(self):
-        return {"id": self.id, "body": self.body}
+        return {"id": self.id, "body": self.body, "post_id": self.post_id}
 
     @classmethod
     def find_comment_by_id(cls, comment_id):
