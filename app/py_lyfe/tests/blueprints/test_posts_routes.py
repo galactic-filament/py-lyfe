@@ -61,7 +61,7 @@ def test_delete_post(mock_client, mock_find_post_by_id):
         "blueprints.posts.db.session.commit"
     ):
         response = mock_client.delete("/posts/{0}".format(mock_post_id))
-        assert response.status_code == codes.ok
+        assert response.status_code == codes.no_content
 
 
 def test_create_post(mock_client, mock_set_post_id):

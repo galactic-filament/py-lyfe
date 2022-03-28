@@ -38,7 +38,7 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
 
-    return jsonify([])
+    return jsonify([]), codes.no_content
 
 
 @posts_blueprint.route("/posts/<int:post_id>", methods=["PUT"])
