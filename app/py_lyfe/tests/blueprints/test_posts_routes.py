@@ -43,7 +43,7 @@ def mock_set_post_id():
 
 
 def test_get_post_happy_path(mock_client, mock_find_post_by_id):
-    response = mock_client.get("/post/{0}".format(mock_post_id))
+    response = mock_client.get("/posts/{0}".format(mock_post_id))
     assert response.status_code == codes.ok
 
     response_body = json.loads(response.get_data(as_text=True))
@@ -52,7 +52,7 @@ def test_get_post_happy_path(mock_client, mock_find_post_by_id):
 
 def test_get_post_not_found(mock_client):
     with patch("blueprints.posts.Post.find_post_by_id", return_value=None):
-        response = mock_client.get("/post/{0}".format(mock_post_id))
+        response = mock_client.get("/posts/{0}".format(mock_post_id))
         assert response.status_code == codes.not_found
 
 
@@ -60,7 +60,7 @@ def test_delete_post(mock_client, mock_find_post_by_id):
     with patch("blueprints.posts.db.session.delete"), patch(
         "blueprints.posts.db.session.commit"
     ):
-        response = mock_client.delete("/post/{0}".format(mock_post_id))
+        response = mock_client.delete("/posts/{0}".format(mock_post_id))
         assert response.status_code == codes.ok
 
 
@@ -83,7 +83,7 @@ def test_get_posts(mock_client, mock_find_all):
 
 def test_update_post(mock_client, mock_find_post_by_id, mock_set_post_id):
     response = mock_client.put(
-        "/post/{0}".format(mock_post_id),
+        "/posts/{0}".format(mock_post_id),
         data=json.dumps(mock_create_post_body),
         content_type="application/json",
     )

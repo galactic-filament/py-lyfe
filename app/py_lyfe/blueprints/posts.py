@@ -23,7 +23,7 @@ def create_post():
     return jsonify(post.as_dict()), codes.created
 
 
-@posts_blueprint.route("/post/<int:post_id>", methods=["GET"])
+@posts_blueprint.route("/posts/<int:post_id>", methods=["GET"])
 def get_post(post_id):
     post = Post.find_post_by_id(post_id)
     if post is None:
@@ -32,7 +32,7 @@ def get_post(post_id):
     return jsonify(post.as_dict())
 
 
-@posts_blueprint.route("/post/<int:post_id>", methods=["DELETE"])
+@posts_blueprint.route("/posts/<int:post_id>", methods=["DELETE"])
 def delete_post(post_id):
     post = Post.find_post_by_id(post_id)
     db.session.delete(post)
@@ -41,7 +41,7 @@ def delete_post(post_id):
     return jsonify([])
 
 
-@posts_blueprint.route("/post/<int:post_id>", methods=["PUT"])
+@posts_blueprint.route("/posts/<int:post_id>", methods=["PUT"])
 def put_post(post_id):
     post = Post.find_post_by_id(post_id)
     post.body = request.json["body"]
